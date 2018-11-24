@@ -1,0 +1,12 @@
+# Python
+__pycache__/
+*.pyc
+/venv/
+
+# Django
+/static/
+/media/
+db.sqlite3
+
+# Node.js
+/node_modules/
