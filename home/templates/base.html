@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+  <title>{% block title %}{% endblock %} ｜ Elcats</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
+
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+  <header class="navbar is-light" role="navigation" aria-label="main navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="#">Elcats</a>
+      </div>
+    </div>
+  </header>
+  
+  {% block content %}{% endblock %}
+  
+  <footer class="footer">
+    <div class="container">
+      <div class="content has-text-centered">
+        <p>&copy; 2018 Elcats</p>
+      </div>
+    </div>
+  </footer>
+  {% block extra_body %}{% endblock %}
+</body>
+</html>
