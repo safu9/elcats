@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}ログアウト{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container">
+    <h2 class="title">
+      ログアウトしました
+    </h2>
+    <p>
+      <a href="{% url 'home:index' %}">ログイン</a>
+    </p>
+  </div>
+</section>
+{% endblock %}
