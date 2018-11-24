@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}ユーザーを探す{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container">
+    <h2 class="title">
+      ユーザーを探す
+    </h2>
+    {% for u in object_list %}
+      <p><a href="{% url 'home:user_detail' u.username %}">{{ u.username }}</a></p>
+    {% empty %}
+      <p>まだユーザーがいません。</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
