@@ -1,0 +1,8 @@
+/* style.css */
+
+.navbar-logo {
+	padding: .25rem .75rem;
+}
+.navbar-logo img {
+	max-height: 2.25rem;
+}
