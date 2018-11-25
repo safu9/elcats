@@ -1,0 +1,35 @@
+/* chat.css */
+
+.chat-channel {
+	display: block;
+	margin: 0 -16px;
+	padding: 8px 16px;
+	transition: background-color .2s ease;
+}
+.chat-channel:hover {
+	background-color: #f7f7f7;
+}
+
+.chat-name {
+	font-weight: bold;
+}
+.chat-day {
+	text-align: center;
+  font-size: .9em;
+}
+.chat-time {
+  font-size: .8em;
+  line-height: 1.875;
+  color: gray;
+}
+
+.chat-content {
+	margin-bottom: .3em;
+  word-break: break-all;
+}
+.chat-content-truncate {
+  overflow: hidden;
+  line-height: 1.5;
+  max-height: 1.5em;
+  word-break: break-all;
+}
