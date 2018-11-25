@@ -1,16 +1,45 @@
 {% extends "base.html" %}
 
+{% load humanize %}
+{% load chat %}
+
 {% block title %}チャット{% endblock %}
 
 {% block content %}
 <section class="section">
   <div class="container">
     <h2 class="title">
-      Hello Chat
+      チャット
     </h2>
-    <p class="subtitle">
-      This is the first page of Elcats chat!
-    </p>
+
+    <hr>
+
+    <div>
+    {% for channel in object_list %}
+      <a href="{% url 'chat:channel' channel.pk %}" class="chat-channel-link clearfix"><div>
+        <div>
+          {% with channel|channel_userinfo:user|attr:"unread_count" as unread_count %}
+            {% if unread_count %}<span class="chat-unread-count float-right tag is-danger is-small is-rounded">{{ unread_count }}</span>{% endif %}
+          {% endwith %}
+          <span class="chat-username">{{ channel|channel_usernames:user }}</span>
+        </div>
+        <div>
+          <div class="float-right chat-time">{{ channel.updated_at|naturaltime }}</div>
+          <div class="chat-content">
+            {{ channel.message_set.last.content }}
+          </div>
+        </div>
+      </div></a>
+    {% empty %}
+      <p>
+        まだチャットはありません。<br>
+        <a href="{% url 'home:user' %}">ユーザーを探す</a>
+      </p>
+    {% endfor %}
+    </div>
+
+    {% if is_paginated %}
+    {% endif %}
   </div>
 </section>
 {% endblock %}

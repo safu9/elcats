@@ -9,6 +9,7 @@
       {{ object.username }}
     </h2>
     <p>
+      <a href="{% url 'chat:new_channel' object.pk %}">チャット</a>
     </p>
   </div>
 </section>

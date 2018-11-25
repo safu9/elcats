@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% load bulma %}
+
+{% block title %}新しいチャット{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container">
+    <h2 class="title">新しいチャット</h2>
+    <h3 class="subtitle">{{ object.username }}</h3>
+    
+    <p>まだメッセージがありません。</p>
+    
+    <hr>
+
+    <form method="post" autocomplete="off">
+      {% csrf_token %}
+      <div class="field">
+        <div class="control">
+          {{ form | bulma_textarea }}
+        </div>
+      </div>
+      <div class="field">
+        <div class="control">
+          <input class="button is-primary" type="submit" value="送信">
+        </div>
+      </div>
+    </form>
+  </div>
+</section>
+{% endblock %}

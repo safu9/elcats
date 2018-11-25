@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% load humanize %}
+{% load bulma chat %}
+
+{% block title %}チャット{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container">
+    <h2 class="title">チャット</h2>
+    <h3 class="subtitle">{{ channel|channel_usernames:user }}</h3>
+
+    <hr>
+
+    <div class="row">
+      {% for message in object_list %}
+        {% ifchanged %}
+          <div class="text-center">{{ message.posted_at|naturalday }}</div>
+        {% endifchanged %}
+
+        <div>
+          <div>
+            <span class="chat-username">{{ message.user.username }}</span>
+            <span class="chat-time">{{ message.posted_at|time:"H:i" }}</span>
+          </div>
+          <div class="chat-content">
+            {{ message.content|linebreaks }}
+          </div>
+        </div>
+        
+      {% empty %}
+        <p>まだメッセージがありません。</p>
+      {% endfor %}
+      
+      <hr>
+
+      <form method="post" autocomplete="off">
+        {% csrf_token %}
+        <div class="field">
+          <div class="control">
+            {{ form | bulma_textarea }}
+          </div>
+        </div>
+        <div class="field">
+          <div class="control">
+            <input class="button is-primary" type="submit" value="送信">
+          </div>
+        </div>
+      </form>
+    </div>
+
+    {% if is_paginated %}
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
