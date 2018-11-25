@@ -81,12 +81,12 @@ class NewChannelView(LoginRequiredMixin, FormMixin, DetailView):
     template_name = 'chat/new_channel.html'
     model = get_user_model()
     form_class = MessageForm
-    
+
     channel = None
 
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
-        
+
         if self.object.id == request.user.id:
             return HttpResponseRedirect(reverse('chat:index'))
 

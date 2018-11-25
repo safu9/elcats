@@ -29,7 +29,7 @@ class Channel(models.Model):
 
     name = models.CharField('名前', max_length=50)
     updated_at = models.DateTimeField('更新日時', default=timezone.now)
-    
+
     objects = ChannelQuerySet.as_manager()
 
     def add_users(self, users):
@@ -38,7 +38,7 @@ class Channel(models.Model):
                 info = ChatUserInfo()
                 info.user = user
                 info.save()
-            
+
             userInfo = ChannelUserInfo()
             userInfo.channel = self
             userInfo.user = user

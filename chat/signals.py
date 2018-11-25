@@ -18,7 +18,7 @@ def update_channel(sender, instance, created, update_fields, **kwargs):
     for channelInfo in channel.userinfo.exclude(user=instance.user).all():
         channelInfo.unread_count = F('unread_count') + 1
         channelInfo.save()
-        
+
         userInfo = getattr(channelInfo.user, 'chatinfo', None)
         userInfo.unread_count = F('unread_count') + 1
         userInfo.save()
