@@ -12,9 +12,14 @@
 {% block content %}
 <section class="section">
   <div class="container">
-    <h2 class="title">
-      チャット
-    </h2>
+    <nav class="breadcrumb is-small" aria-label="breadcrumbs">
+      <ul>
+        <li><a href="{% url 'home:index' %}">トップ</a></li>
+        <li class="is-active"><a href="#">チャット</a></li>
+      </ul>
+    </nav>
+
+    <h2 class="title">チャット</h2>
 
     <hr>
 

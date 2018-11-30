@@ -7,9 +7,14 @@
 {% block content %}
 <section class="section">
   <div class="container">
-    <h2 class="title">
-      予定
-    </h2>
+    <nav class="breadcrumb is-small" aria-label="breadcrumbs">
+      <ul>
+        <li><a href="{% url 'home:index' %}">トップ</a></li>
+        <li class="is-active"><a href="#">予定</a></li>
+      </ul>
+    </nav>
+
+    <h2 class="title">予定</h2>
 
     <hr>
 

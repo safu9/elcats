@@ -7,6 +7,14 @@
 {% block content %}
 <section class="section">
   <div class="container">
+    <nav class="breadcrumb is-small" aria-label="breadcrumbs">
+      <ul>
+        <li><a href="{% url 'home:index' %}">トップ</a></li>
+        <li><a href="{% url 'chat:index' %}">チャット</a></li>
+        <li class="is-active"><a href="#">新規チャンネル</a></li>
+      </ul>
+    </nav>
+
     <h2 class="title">新しいチャット</h2>
     <h3 class="subtitle">{{ object.username }}</h3>
 

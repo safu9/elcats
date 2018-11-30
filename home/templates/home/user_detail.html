@@ -5,9 +5,15 @@
 {% block content %}
 <section class="section">
   <div class="container">
-    <h2 class="title">
-      {{ object.username }}
-    </h2>
+    <nav class="breadcrumb is-small" aria-label="breadcrumbs">
+      <ul>
+        <li><a href="{% url 'home:index' %}">トップ</a></li>
+        <li class="is-active"><a href="#">ユーザー詳細</a></li>
+      </ul>
+    </nav>
+
+    <h2 class="title">{{ object.username }}</h2>
+
     <p>
       <a href="{% url 'chat:new_channel' object.pk %}">チャット</a>
     </p>

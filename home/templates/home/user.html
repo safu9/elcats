@@ -5,9 +5,15 @@
 {% block content %}
 <section class="section">
   <div class="container">
-    <h2 class="title">
-      ユーザーを探す
-    </h2>
+    <nav class="breadcrumb is-small" aria-label="breadcrumbs">
+      <ul>
+        <li><a href="{% url 'home:index' %}">トップ</a></li>
+        <li class="is-active"><a href="#">ユーザー一覧</a></li>
+      </ul>
+    </nav>
+
+    <h2 class="title">ユーザーを探す</h2>
+
     {% for u in object_list %}
       <p><a href="{% url 'home:user_detail' u.username %}">{{ u.username }}</a></p>
     {% empty %}

@@ -5,9 +5,16 @@
 {% block content %}
 <section class="section">
   <div class="container">
-    <h2 class="title">
-      予定削除
-    </h2>
+    <nav class="breadcrumb is-small" aria-label="breadcrumbs">
+      <ul>
+        <li><a href="{% url 'home:index' %}">トップ</a></li>
+        <li><a href="{% url 'schedule:index' %}">予定</a></li>
+        <li><a href="{% url 'schedule:detail' object.pk %}">詳細</a></li>
+        <li class="is-active"><a href="#">削除</a></li>
+      </ul>
+    </nav>
+
+    <h2 class="title">予定削除</h2>
     <h3 class="subtitle">{{ object.name }}</h3>
 
     <hr>
