@@ -1,20 +1,19 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
-from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
-
+from django.views import generic
 
 from .forms import ScheduleForm
 from .models import Schedule
 
 
-class IndexView(LoginRequiredMixin, ListView):
+class IndexView(LoginRequiredMixin, generic.ListView):
     template_name = 'schedule/index.html'
     model = Schedule
     paginate_by = 20
 
 
-class CreateView(LoginRequiredMixin, CreateView):
+class CreateView(LoginRequiredMixin, generic.CreateView):
     template_name = 'schedule/create.html'
     form_class = ScheduleForm
 
@@ -30,12 +29,12 @@ class CreateView(LoginRequiredMixin, CreateView):
         return reverse('schedule:detail', args=(self.object.pk,))
 
 
-class DetailView(LoginRequiredMixin, DetailView):
+class DetailView(LoginRequiredMixin, generic.DetailView):
     template_name = 'schedule/detail.html'
     model = Schedule
 
 
-class UpdateView(UserPassesTestMixin, UpdateView):
+class UpdateView(UserPassesTestMixin, generic.UpdateView):
     template_name = 'schedule/update.html'
     model = Schedule
     form_class = ScheduleForm
@@ -54,7 +53,7 @@ class UpdateView(UserPassesTestMixin, UpdateView):
         return reverse('schedule:detail', args=(self.object.pk,))
 
 
-class DeleteView(UserPassesTestMixin, DeleteView):
+class DeleteView(UserPassesTestMixin, generic.DeleteView):
     template_name = 'schedule/delete.html'
     model = Schedule
     success_url = reverse_lazy('schedule:index')

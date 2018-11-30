@@ -3,15 +3,14 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
-from django.utils import timezone
-from django.views.generic import DetailView, ListView
+from django.views import generic
 from django.views.generic.edit import FormMixin
 
 from .forms import MessageForm
 from .models import Channel
 
 
-class IndexView(LoginRequiredMixin, ListView):
+class IndexView(LoginRequiredMixin, generic.ListView):
     template_name = 'chat/index.html'
     model = Channel
     paginate_by = 20
@@ -20,7 +19,7 @@ class IndexView(LoginRequiredMixin, ListView):
         return Channel.objects.filter(userinfo__user=self.request.user).all().order_by('-updated_at')
 
 
-class ChannelView(UserPassesTestMixin, FormMixin, ListView):
+class ChannelView(UserPassesTestMixin, FormMixin, generic.ListView):
     template_name = 'chat/channel.html'
     paginate_by = 20
     form_class = MessageForm
@@ -77,7 +76,7 @@ class ChannelView(UserPassesTestMixin, FormMixin, ListView):
         return super().get_context_data(**context)
 
 
-class NewChannelView(LoginRequiredMixin, FormMixin, DetailView):
+class NewChannelView(LoginRequiredMixin, FormMixin, generic.DetailView):
     template_name = 'chat/new_channel.html'
     model = get_user_model()
     form_class = MessageForm
