@@ -1,7 +1,7 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import redirect
-from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, DetailView
+from django.urls import reverse
+from django.views.generic import ListView, CreateView, DetailView, UpdateView
 
 
 from .forms import ScheduleForm
@@ -17,7 +17,6 @@ class IndexView(LoginRequiredMixin, ListView):
 class CreateView(LoginRequiredMixin, CreateView):
     template_name = 'schedule/create.html'
     form_class = ScheduleForm
-    success_url = reverse_lazy('schedule:index')
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
@@ -27,7 +26,29 @@ class CreateView(LoginRequiredMixin, CreateView):
 
         return redirect(self.get_success_url())
 
+    def get_success_url(self):
+        return reverse('schedule:detail', args=(self.object.pk,))
+
 
 class DetailView(LoginRequiredMixin, DetailView):
     template_name = 'schedule/detail.html'
     model = Schedule
+
+
+class UpdateView(UserPassesTestMixin, UpdateView):
+    template_name = 'schedule/update.html'
+    model = Schedule
+    form_class = ScheduleForm
+
+    def test_func(self):
+        if not self.request.user.is_authenticated:
+            return False
+
+        self.object = self.get_object()
+        if self.object.author != self.request.user:
+            self.raise_exception = True
+            return False
+        return True
+
+    def get_success_url(self):
+        return reverse('schedule:detail', args=(self.object.pk,))
