@@ -1,7 +1,14 @@
 /* style.css */
 
+body {
+  word-break: break-all;
+}
 p {
   margin-bottom: 1em;
+}
+
+.columns {
+  word-break: break-all;
 }
 
 .navbar-logo {

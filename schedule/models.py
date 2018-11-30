@@ -17,9 +17,6 @@ class Schedule(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='authored_schedules', verbose_name='作成者')
     participants = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='participated_schedules', verbose_name='参加者')
 
-    def __str__(self):
-        return self.user.username
-
     def get_occurence_dates(self, start, end):
         if start < self.date:
             start = self.date

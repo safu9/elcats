@@ -40,7 +40,10 @@
       </p>
     {% endfor %}
 
+    <hr>
+
     <a href="{% url 'schedule:create' %}">予定を作成する</a>
+    <a href="{% url 'schedule:week' %}">週間表示</a>
 
     {% if is_paginated %}
     {% endif %}

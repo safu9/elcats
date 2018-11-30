@@ -1,16 +1,51 @@
+import datetime
+
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.views import generic
 
 from .forms import ScheduleForm
+from .mixins import WeekCalendarMixin
 from .models import Schedule
 
 
 class IndexView(LoginRequiredMixin, generic.ListView):
     template_name = 'schedule/index.html'
     model = Schedule
+    ordering = ('date', 'time_from')
     paginate_by = 20
+
+
+class WeekView(WeekCalendarMixin, generic.TemplateView):
+    template_name = 'schedule/week.html'
+
+    def get_week_schedules(self, first, end):
+        data = [[]]
+        schedules = Schedule.objects.filter(date__range=(first, end)).order_by('date', 'time_from')
+        day = first
+        for schedule in schedules:
+            while day < schedule.date:
+                data.append([])
+                day += datetime.timedelta(days=1)
+            data[-1].append(schedule)
+        while day < end:
+            data.append([])
+            day += datetime.timedelta(days=1)
+        return data
+
+    def get_week_calendar(self):
+        data = super().get_week_calendar()
+        data['schedules'] = self.get_week_schedules(data['first'], data['last'])
+        return data
+
+    def get_context_data(self, **kwargs):
+        calendar = self.get_week_calendar()
+        calendar['date_list'] = zip(calendar['days'], calendar['schedules'])
+
+        context = super().get_context_data(**kwargs)
+        context['calendar'] = calendar
+        return context
 
 
 class CreateView(LoginRequiredMixin, generic.CreateView):
