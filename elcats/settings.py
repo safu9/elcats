@@ -39,6 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
 
+    # 3rd party app
+    'recurrence',
+
     'home.apps.HomeConfig',
     'chat.apps.ChatConfig',
     'schedule.apps.ScheduleConfig',

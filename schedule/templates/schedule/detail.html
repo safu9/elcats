@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% load humanize %}
+
+{% block title %}予定{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container">
+    <h2 class="title">
+      予定詳細
+    </h2>
+    <h3 class="subtitle">{{ object.name }}</h3>
+
+    <hr>
+
+    <div class="content">
+      <h4>説明</h4>
+      {% if book.description %}
+      	{{ object.description | linebreaks }}
+      {% else %}
+      	<p>この予定の説明はありません。</p>
+      {% endif %}
+
+      <h4>日時</h4>
+      <p>
+        {{ object.date|date }}
+        {% if object.time_from %}
+          {{ object.time_from|time:"H:i" }}
+          {% if object.time_to %} ～ {{ object.time_to|time:"H:i" }}{% endif %}
+        {% endif %}
+      </p>
+
+      {% if object.place %}
+        <h4>場所</h4>
+        <p>{{ object.place }}</p>
+      {% endif %}
+
+      <h4>作成者</h4>
+      <p>{{ object.author.username }}</p>
+
+      <h4>参加者</h4>
+      <p>
+        {% for participant in object.participants.all %}
+          {{ participant.username }}
+        {% empty %}
+          まだ参加者がいません。
+        {% endfor %}
+      </p>
+    </div>
+
+  </div>
+</section>
+{% endblock %}

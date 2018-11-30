@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% load humanize %}
+
+{% block title %}予定{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container">
+    <h2 class="title">
+      予定
+    </h2>
+
+    <hr>
+
+    {% for schedule in object_list %}
+      {% ifchanged %}
+        <div>{{ schedule.date|naturalday }}</div>
+      {% endifchanged %}
+
+      <a href="{% url 'schedule:detail' schedule.pk %}">
+        <div>
+          <div>
+            {% if schedule.time_from %}
+              {{ schedule.time_from|time:"H:i" }}
+              {% if schedule.time_to %} ～ {{ schedule.time_to|time:"H:i" }}{% endif %}
+            {% endif %}
+          </div>
+          <div>{{ schedule.author.username }} : {{ schedule.name }}</div>
+        </div>
+      </a>
+    {% empty %}
+      <p>
+        まだ予定がありません。
+      </p>
+    {% endfor %}
+
+    <a href="{% url 'schedule:create' %}">予定を作成する</a>
+
+    {% if is_paginated %}
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
