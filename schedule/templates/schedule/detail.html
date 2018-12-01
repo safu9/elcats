@@ -56,10 +56,12 @@
 
       <hr>
 
-      <p>
-        <a href="{% url 'schedule:update' object.pk %}" class="button is-text is-small">編集</a>
-        <a href="{% url 'schedule:delete' object.pk %}" class="button is-text is-small">削除</a>
-      </p>
+      {% if object.author == user %}
+        <p>
+          <a href="{% url 'schedule:update' object.pk %}" class="button is-text is-small">編集</a>
+          <a href="{% url 'schedule:delete' object.pk %}" class="button is-text is-small">削除</a>
+        </p>
+      {% endif %}
     </div>
 
   </div>

@@ -57,7 +57,9 @@
 
       <p>
         <a href="{% url 'task:update' object.pk %}" class="button is-text is-small">編集</a>
-        <a href="{% url 'task:delete' object.pk %}" class="button is-text is-small">削除</a>
+        {% if object.author == user %}
+          <a href="{% url 'task:delete' object.pk %}" class="button is-text is-small">削除</a>
+        {% endif %}
       </p>
     </div>
 
