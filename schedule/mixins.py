@@ -14,8 +14,8 @@ class BaseCalendarMixin:
 class WeekCalendarMixin(BaseCalendarMixin):
     """ 週間カレンダーの機能を提供するMixin """
 
-    def get_week_days(self):
-        """ その週の日を全て返す """
+    def get_current_week(self):
+        """ 表示する週を返す """
         month = self.kwargs.get('month')
         year = self.kwargs.get('year')
         day = self.kwargs.get('day')
@@ -24,24 +24,25 @@ class WeekCalendarMixin(BaseCalendarMixin):
             date = datetime.date(year=int(year), month=int(month), day=int(day))
         else:
             date = datetime.date.today()
+        return date
 
+    def get_week_days(self, date):
+        """ その週の全ての日を返す """
         for week in self._calendar.monthdatescalendar(date.year, date.month):
-            if date in week:  # 週ごとのdatetime.date型のリスト
+            if date in week:
                 return week
 
     def get_week_calendar(self):
         """ 週間カレンダー情報の入った辞書を返す """
         self.setup()
-        days = self.get_week_days()
-        first = days[0]
-        last = days[-1]
+        current = self.get_current_week()
+        days = self.get_week_days(current)
         calendar_data = {
             'now': datetime.date.today(),
             'days': days,
-            'next': first + datetime.timedelta(days=7),
-            'previous': first - datetime.timedelta(days=7),
-            'first': first,
-            'last': last,
+            'current': current,
+            'next': days[0] + datetime.timedelta(days=7),
+            'previous': days[0] - datetime.timedelta(days=7),
         }
         return calendar_data
 
@@ -65,12 +66,8 @@ class MonthCalendarMixin(BaseCalendarMixin):
         else:
             return date.replace(month=date.month+1, day=1)
 
-    def get_month_days(self, date):
-        """ その月の全ての日を返す """
-        return list(self._calendar.itermonthdates(date.year, date.month))
-
     def get_current_month(self):
-        """ 現在の月を返す """
+        """ 表示する月を返す """
         month = self.kwargs.get('month')
         year = self.kwargs.get('year')
 
@@ -79,15 +76,19 @@ class MonthCalendarMixin(BaseCalendarMixin):
         else:
             return datetime.date.today().replace(day=1)
 
+    def get_month_days(self, date):
+        """ その月の全ての日を返す """
+        return list(self._calendar.itermonthdates(date.year, date.month))
+
     def get_month_calendar(self):
         """ 月間カレンダー情報の入った辞書を返す """
         self.setup()
-        current_month = self.get_current_month()
+        current = self.get_current_month()
         calendar_data = {
             'now': datetime.date.today(),
-            'days': self.get_month_days(current_month),
-            'current': current_month,
-            'previous': self.get_previous_month(current_month),
-            'next': self.get_next_month(current_month),
+            'days': self.get_month_days(current),
+            'current': current,
+            'previous': self.get_previous_month(current),
+            'next': self.get_next_month(current),
         }
         return calendar_data

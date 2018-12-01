@@ -21,7 +21,7 @@
       <div class="column is-clearfix has-text-centered">
         <a class="is-pulled-left" href="{% url 'schedule:week' calendar.previous.year calendar.previous.month calendar.previous.day %}">前週</a>
         <a class="is-pulled-right" href="{% url 'schedule:week' calendar.next.year calendar.next.month calendar.next.day %}">次週</a>
-        <span>{{ calendar.first | date:"Y年n月" }}</span>
+        <span>{{ calendar.current | date:"Y年n月" }}</span>
       </div>
     </div>
 
@@ -29,7 +29,7 @@
       {% for date, schedules in calendar.date_list.items %}
         <div class="column is-one-seventh">
           <div class="{% if calendar.now == date %}has-text-weight-bold{% endif %}">
-            {% if calendar.first.month == date.month %}
+            {% if calendar.current.month == date.month %}
               {{ date | date:"j (D)" }}
             {% else %}
               {{ date | date:"n/j (D)" }}
