@@ -9,30 +9,38 @@
       <ul>
         <li><a href="{% url 'home:index' %}">トップ</a></li>
         <li><a href="{% url 'schedule:index' %}">予定</a></li>
-        <li class="is-active"><a href="#">週間</a></li>
+        <li class="is-active"><a href="#">月間</a></li>
       </ul>
     </nav>
 
-    <h2 class="title">週間予定</h2>
+    <h2 class="title">月間予定</h2>
 
     <hr>
 
     <div class="columns">
       <div class="column is-clearfix has-text-centered">
-        <a class="is-pulled-left" href="{% url 'schedule:week' calendar.previous.year calendar.previous.month calendar.previous.day %}">前週</a>
-        <a class="is-pulled-right" href="{% url 'schedule:week' calendar.next.year calendar.next.month calendar.next.day %}">次週</a>
-        <span>{{ calendar.first | date:"Y年n月" }}</span>
+        <a class="is-pulled-left" href="{% url 'schedule:month' calendar.previous.year calendar.previous.month  %}">前月</a>
+        <a class="is-pulled-right" href="{% url 'schedule:month' calendar.next.year calendar.next.month %}">次月</a>
+        <span>{{ calendar.current | date:"Y年n月" }}</span>
       </div>
     </div>
 
     <div class="columns">
+      {% for date in calendar.days|slice:":7" %}
+        <div class="column is-one-seventh">
+          {{ date | date:"D" }}
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="columns is-multiline">
       {% for date, schedules in calendar.date_list %}
         <div class="column is-one-seventh">
           <div class="{% if calendar.now == date %}has-text-weight-bold{% endif %}">
-            {% if calendar.first.month == date.month %}
-              {{ date | date:"j (D)" }}
+            {% if calendar.current.month == date.month %}
+              {{ date | date:"j" }}
             {% else %}
-              {{ date | date:"n/j (D)" }}
+              {{ date | date:"n/j" }}
             {% endif %}
           </div>
 
