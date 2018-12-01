@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load avatar %}
+
 {% block title %}{{ object.username }}{% endblock %}
 
 {% block content %}
@@ -12,7 +14,16 @@
       </ul>
     </nav>
 
-    <h2 class="title">{{ object.username }}</h2>
+    <div class="media">
+      <figure class="media-left">
+        <p class="image is-64x64">
+          {% avatar_img object 64 %}
+        </p>
+      </figure>
+      <div class="media-content">
+        <h2 class="title is-clearfix">{{ object.username }}</h2>
+      </div>
+    </div>
 
     <p>
       <a href="{% url 'chat:new_channel' object.pk %}">チャット</a>

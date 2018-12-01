@@ -79,6 +79,7 @@ class ChannelView(UserPassesTestMixin, FormMixin, generic.ListView):
 class NewChannelView(LoginRequiredMixin, FormMixin, generic.DetailView):
     template_name = 'chat/new_channel.html'
     model = get_user_model()
+    context_object_name = 'object'
     form_class = MessageForm
 
     channel = None

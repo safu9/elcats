@@ -1,4 +1,4 @@
-{% load static %}
+{% load static avatar %}
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -20,6 +20,32 @@
     <div class="container">
       <div class="navbar-brand">
         <a class="navbar-item navbar-logo" href="/"><img src="{% static 'img/logo.png' %}" alt="Elcats"/></a>
+
+        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu">
+        <div class="navbar-end">
+          {% if user.is_authenticated %}
+            <div class="navbar-item has-dropdown is-hoverable">
+              <a class="navbar-link is-arrowless is-hidden-touch">
+                {% avatar_img user 28 %}
+              </a>
+
+              <div class="navbar-dropdown is-right">
+                <a class="navbar-item" href="{% url 'home:user_detail' user.username %}">
+                  マイページ
+                </a>
+                <a class="navbar-item" href="{% url 'home:logout' %}">
+                  ログアウト
+                </a>
+              </div>
+            </div>
+          {% endif %}
+        </div>
       </div>
     </div>
   </header>
@@ -33,6 +59,18 @@
       </div>
     </div>
   </footer>
+
   {% block extra_body %}{% endblock %}
+  <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var $navbarBurger = document.querySelector('.navbar-burger');
+    $navbarBurger.addEventListener('click', function () {
+      var $navbarMenu = document.querySelector('.navbar-menu');
+
+      $navbarBurger.classList.toggle('is-active');
+      $navbarMenu.classList.toggle('is-active');
+    });
+  });
+  </script>
 </body>
 </html>

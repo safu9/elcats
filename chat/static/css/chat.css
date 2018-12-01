@@ -24,12 +24,25 @@
 }
 
 .chat-content {
-	margin-bottom: .3em;
   word-break: break-all;
+}
+.chat-content p {
+	margin-bottom: 0;
 }
 .chat-content-truncate {
   overflow: hidden;
   line-height: 1.5;
   max-height: 1.5em;
   word-break: break-all;
+}
+
+.chat .media {
+  border-top: none;
+  padding-top: 0;
+}
+.chat .media .avatar {
+  margin-top: .3rem;
+}
+.chat .media-left {
+  margin-right: .7rem;
 }

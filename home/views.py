@@ -28,4 +28,5 @@ class UserView(LoginRequiredMixin, generic.ListView):
 class UserDetailView(LoginRequiredMixin, generic.DetailView):
     template_name = 'home/user_detail.html'
     model = get_user_model()
+    context_object_name = 'object'
     slug_field = 'username'

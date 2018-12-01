@@ -17,7 +17,18 @@ p {
 .navbar-logo img {
 	max-height: 2.25rem;
 }
+@media screen and (max-width: 1087px) {
+  .navbar-menu {
+    position: absolute;
+    left: 0;
+    right: 0;
+  }
+}
 
 .pagination-ellipsis {
   pointer-events: auto;
+}
+
+.avatar {
+  border-radius: 4px;
 }
