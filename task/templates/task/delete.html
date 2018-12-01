@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}タスク{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container">
+    <nav class="breadcrumb is-small" aria-label="breadcrumbs">
+      <ul>
+        <li><a href="{% url 'home:index' %}">トップ</a></li>
+        <li><a href="{% url 'task:index' %}">タスク</a></li>
+        <li><a href="{% url 'task:detail' object.pk %}">詳細</a></li>
+        <li class="is-active"><a href="#">削除</a></li>
+      </ul>
+    </nav>
+
+    <h2 class="title">タスク削除</h2>
+    <h3 class="subtitle">{{ object.name }}</h3>
+
+    <hr>
+
+    <p>タスク「#{{ object.pk }} {{ object.name }}」を削除していいですか？</p>
+
+    <form method="post">
+      {% csrf_token %}
+
+      <div class="field is-grouped">
+        <div class="control">
+          <input class="button is-danger" type="submit" value="削除">
+        </div>
+        <div class="control">
+          <a href="{% url 'task:detail' object.pk %}" class="button is-text">戻る</a>
+        </div>
+      </div>
+    </form>
+
+  </div>
+</section>
+{% endblock %}

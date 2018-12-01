@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% load bulma %}
+
+{% block title %}タスク{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container">
+    <nav class="breadcrumb is-small" aria-label="breadcrumbs">
+      <ul>
+        <li><a href="{% url 'home:index' %}">トップ</a></li>
+        <li class="is-active"><a href="#">タスク</a></li>
+      </ul>
+    </nav>
+
+    <h2 class="title">タスク</h2>
+
+    <hr>
+
+    {% for task in object_list %}
+      <a href="{% url 'task:detail' task.pk %}">
+        <p>
+          #{{ task.pk }} : {{ task.name }}
+        </p>
+      </a>
+    {% empty %}
+      <p>
+        まだタスクがありません。
+      </p>
+    {% endfor %}
+
+    <hr>
+
+    <p>
+      <a href="{% url 'task:create' %}">タスクを作成する</a>
+    </p>
+
+    {% if is_paginated %}
+      <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+        {% bulma_pagination page_obj %}
+      </nav>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
