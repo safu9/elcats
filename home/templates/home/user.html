@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load bulma %}
+
 {% block title %}ユーザーを探す{% endblock %}
 
 {% block content %}
@@ -19,6 +21,12 @@
     {% empty %}
       <p>まだユーザーがいません。</p>
     {% endfor %}
+
+    {% if is_paginated %}
+      <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+        {% bulma_pagination page_obj %}
+      </nav>
+    {% endif %}
   </div>
 </section>
 {% endblock %}

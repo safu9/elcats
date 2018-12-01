@@ -17,3 +17,7 @@ p {
 .navbar-logo img {
 	max-height: 2.25rem;
 }
+
+.pagination-ellipsis {
+  pointer-events: auto;
+}

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% load humanize static %}
-{% load chat %}
+{% load bulma chat %}
 
 {% block title %}チャット{% endblock %}
 
@@ -40,12 +40,16 @@
       </a>
     {% empty %}
       <p>
-        まだチャットはありません。<br>
-        <a href="{% url 'home:user' %}">ユーザーを探す</a>
+        まだチャットはありません。
       </p>
     {% endfor %}
 
+    <p><a href="{% url 'home:user' %}">ユーザーを探す</a></p>
+
     {% if is_paginated %}
+      <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+        {% bulma_pagination page_obj %}
+      </nav>
     {% endif %}
   </div>
 </section>
