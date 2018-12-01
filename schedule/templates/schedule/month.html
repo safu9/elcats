@@ -26,15 +26,15 @@
     </div>
 
     <div class="columns">
-      {% for date in calendar.days|slice:":7" %}
+      {% for day in calendar.days|slice:":7" %}
         <div class="column is-one-seventh">
-          {{ date | date:"D" }}
+          {{ day | date:"D" }}
         </div>
       {% endfor %}
     </div>
 
     <div class="columns is-multiline">
-      {% for date, schedules in calendar.date_list %}
+      {% for date, schedules in calendar.date_list.items %}
         <div class="column is-one-seventh">
           <div class="{% if calendar.now == date %}has-text-weight-bold{% endif %}">
             {% if calendar.current.month == date.month %}

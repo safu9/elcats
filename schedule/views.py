@@ -17,18 +17,20 @@ class IndexView(LoginRequiredMixin, generic.ListView):
     paginate_by = 20
 
 
-def get_date_schedules(first, end):
-    data = [[]]
-    schedules = Schedule.objects.filter(date__range=(first, end)).order_by('date', 'time_from')
-    day = first
-    for schedule in schedules:
-        while day < schedule.date:
-            data.append([])
-            day += datetime.timedelta(days=1)
-        data[-1].append(schedule)
-    while day < end:
-        data.append([])
-        day += datetime.timedelta(days=1)
+def get_date_schedule_dict(dates):
+    """ ソート済みのdatetime型リストをキーとしたスケジュールリストの辞書を返す """
+    data = { d: [] for d in dates }
+    schedules = Schedule.objects.filter(date__range=(dates[0], dates[-1])).order_by('date', 'time_from').iterator()
+    schedule = next(schedules, None)
+
+    for day, list in data.items():
+        if not schedule:
+            break
+        if day < schedule.date:
+            continue
+        while schedule and day == schedule.date:
+            list.append(schedule)
+            schedule = next(schedules, None)
     return data
 
 
@@ -37,15 +39,12 @@ class WeekView(WeekCalendarMixin, generic.TemplateView):
 
     def get_week_calendar(self):
         data = super().get_week_calendar()
-        data['schedules'] = get_date_schedules(data['first'], data['last'])
+        data['date_list'] = get_date_schedule_dict(data['days'])
         return data
 
     def get_context_data(self, **kwargs):
-        calendar = self.get_week_calendar()
-        calendar['date_list'] = zip(calendar['days'], calendar['schedules'])
-
         context = super().get_context_data(**kwargs)
-        context['calendar'] = calendar
+        context['calendar'] = self.get_week_calendar()
         return context
 
 
@@ -54,15 +53,12 @@ class MonthView(MonthCalendarMixin, generic.TemplateView):
 
     def get_month_calendar(self):
         data = super().get_month_calendar()
-        data['schedules'] = get_date_schedules(data['days'][0], data['days'][-1])
+        data['date_list'] = get_date_schedule_dict(data['days'])
         return data
 
     def get_context_data(self, **kwargs):
-        calendar = self.get_month_calendar()
-        calendar['date_list'] = zip(calendar['days'], calendar['schedules'])
-
         context = super().get_context_data(**kwargs)
-        context['calendar'] = calendar
+        context['calendar'] = self.get_month_calendar()
         return context
 
 

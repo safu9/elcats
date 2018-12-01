@@ -26,7 +26,7 @@
     </div>
 
     <div class="columns">
-      {% for date, schedules in calendar.date_list %}
+      {% for date, schedules in calendar.date_list.items %}
         <div class="column is-one-seventh">
           <div class="{% if calendar.now == date %}has-text-weight-bold{% endif %}">
             {% if calendar.first.month == date.month %}
