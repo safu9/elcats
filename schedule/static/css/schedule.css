@@ -1,0 +1,63 @@
+/* schedule.css */
+
+.schedule-cell {
+  flex: none;
+  width: 14.2857%;
+  font-size: .9rem;
+  min-height: 4rem;
+}
+
+@media screen and (max-width: 768px) {
+  .schedule-cell {
+    padding: .25rem;
+    font-size: .8rem;
+  }
+}
+@media screen and (max-width: 375px) {
+  .schedule-cell {
+    padding: .15rem;
+    font-size: .7rem;
+  }
+}
+
+.schedule-days .schedule-cell {
+  border-bottom-width: 0px;
+  min-height: 0;
+}
+@media screen and (min-width: 769px) {
+  .schedule-days .schedule-cell {
+    padding: .25rem .75rem;
+  }
+}
+
+.schedule-date {
+  padding-bottom: .2rem;
+  border-bottom: 1px solid #eee;
+  margin-bottom: .2rem;
+}
+.schedule-date.is-sunday {
+  border-bottom-color: #ff3860;
+}
+.schedule-date.is-today {
+  border-bottom-color: #00d1b2;
+}
+
+.schedule-link {
+  display: block;
+  margin: 0 -0.2rem;
+  padding: .2rem;
+  transition: background-color .2s ease;
+  color: #000;
+}
+.schedule-link:hover {
+  background-color: #f7f7f7;
+}
+.schedule-link + .schedule-link {
+  border-top: 1px dotted #eee;
+}
+
+.schedule-name-truncate {
+  overflow: hidden;
+  line-height: 1.5;
+  max-height: 4.5em;
+}

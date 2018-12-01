@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 
+{% load static %}
+
 {% block title %}予定{% endblock %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'css/schedule.css' %}" />
+{% endblock %}
 
 {% block content %}
 <section class="section">
@@ -25,26 +31,24 @@
       </div>
     </div>
 
-    <div class="columns">
+    <div class="columns is-mobile">
       {% for date, schedules in calendar.date_list.items %}
-        <div class="column is-one-seventh">
-          <div class="{% if calendar.now == date %}has-text-weight-bold{% endif %}">
-            {% if calendar.current.month == date.month %}
-              {{ date | date:"j (D)" }}
-            {% else %}
-              {{ date | date:"n/j (D)" }}
-            {% endif %}
+        <div class="column schedule-cell">
+          <div class="schedule-date{% if calendar.now == date %} is-today{% endif %}{% if date.weekday == 6 %} is-sunday{% endif %}">
+            {% if calendar.current.month != date.month %}{% ifchanged %}{{ date | date:"n" }}/{% endifchanged %}{% endif %}{{ date | date:"j" }}
+            <span class="is-hidden-mobile">({{ date | date:"D" }})</span>
           </div>
 
           {% for schedule in schedules %}
-            <a href="{% url 'schedule:detail' schedule.pk %}">
+            <a href="{% url 'schedule:detail' schedule.pk %}" class="schedule-link">
               <div>
                 {% if schedule.time_from %}
-                  {{ schedule.time_from|time:"H:i" }}
-                  {% if schedule.time_to %} ～ {{ schedule.time_to|time:"H:i" }}{% endif %}
-                  <br>
+                  <div>
+                    {{ schedule.time_from|time:"H:i" }}
+                    {% if schedule.time_to %} ～ {{ schedule.time_to|time:"H:i" }}{% endif %}
+                  </div>
                 {% endif %}
-                {{ schedule.name }}
+                <div class="schedule-name-truncate">{{ schedule.name }}</div>
               </div>
             </a>
           {% endfor %}
