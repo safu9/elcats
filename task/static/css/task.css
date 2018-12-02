@@ -1,0 +1,80 @@
+/* task.css */
+
+.task-state-0 {
+  background: #ffdd57;
+}
+.task-state-1 {
+  background: #00d1b2;
+}
+.task-state-2 {
+  background: #b5b5b5;
+}
+
+.task-gantt {
+  display: flex;
+  width: 100%;
+}
+.task-gantt-items {
+  width: 200px;
+}
+.task-gantt-charts {
+  display: block;
+  min-width: 0;
+  flex-basis: 0;
+  flex-grow: 1;
+  flex-shrink: 1;
+  overflow-y: auto;
+}
+.task-gantt-charts-wrapper {
+  min-width: 0;
+}
+@media screen and (max-width: 768px) {
+  .task-gantt-items {
+    width: 100px;
+  }
+}
+
+.task-gantt-row {
+  display: flex;
+  position: relative;
+  height: 2rem;
+  font-size: .8rem;
+  line-height: 2;
+  border: 1px solid #eee;
+}
+.task-gantt-row:first-child {
+  margin-top: 1.5rem;
+}
+.task-gantt-row:nth-child(n+2) {
+  border-top: none;
+}
+.task-gantt-items .task-gantt-row {
+  padding: 0 .5rem;
+  overflow: hidden;
+}
+.task-gantt-charts .task-gantt-row {
+  border-left: none;
+}
+
+.task-gantt-cell {
+  min-width: 1rem;
+  width: 1rem;
+  border-right: 1px solid #eee;
+}
+.task-gantt-cell:last-child {
+  border-right: none;
+}
+
+.task-gantt-date,
+.task-gantt-month {
+  text-align: center;
+}
+.task-gantt-day6 {
+  background: #f5f5f5;
+}
+
+.task-gantt-bar {
+  position: absolute;
+  top: .2rem;
+  height: 1.5rem;
+}

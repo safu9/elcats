@@ -6,6 +6,7 @@ from . import views
 app_name = 'task'
 urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
+    path('gantt/', views.GanttView.as_view(), name='gantt'),
     path('create/', views.CreateView.as_view(), name='create'),
     path('<int:pk>/', views.DetailView.as_view(), name='detail'),
     path('<int:pk>/update/', views.UpdateView.as_view(), name='update'),

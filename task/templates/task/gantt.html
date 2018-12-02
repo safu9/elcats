@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load bulma %}
+
+{% block title %}タスク{% endblock %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'css/task.css' %}" />
+{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container">
+    <nav class="breadcrumb is-small" aria-label="breadcrumbs">
+      <ul>
+        <li><a href="{% url 'home:index' %}">トップ</a></li>
+        <li><a href="{% url 'task:index' %}">タスク</a></li>
+        <li class="is-active"><a href="#">ガントチャート</a></li>
+      </ul>
+    </nav>
+
+    <h2 class="title">ガントチャート</h2>
+
+    <hr>
+
+    <div class="task-gantt">
+      <div class="task-gantt-items">
+        <div class="task-gantt-row"></div>
+        <div class="task-gantt-row">タスク</div>
+        {% for task in object_list %}
+          <div class="task-gantt-row">
+            <a href="{% url 'task:detail' task.pk %}">
+              #{{ task.pk }} : {{ task.name }}
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="task-gantt-charts">
+        <div class="task-gantt-charts-wrapper" style="width:{{dates|length}}rem;">
+          <div class="task-gantt-row">
+            {% for month in months %}
+              <div class="task-gantt-cell task-gantt-month" style="width:{{ month.length }}rem;">
+                {% if month.length >= 5 %}
+                  {{ month.date|date:"Y年n月" }}
+                {% elif month.length >= 2 %}
+                  {{ month.date|date:"n月" }}
+                {% endif %}
+              </div>
+            {% endfor %}
+          </div>
+          <div class="task-gantt-row">
+            {% for date in dates %}
+              <div class="task-gantt-cell task-gantt-date task-gantt-day{{ date.weekday }}">
+                {{ date|date:"j" }}
+              </div>
+            {% endfor %}
+          </div>
+          {% for task, chart in charts %}
+            <div class="task-gantt-row">
+              {% for date in dates %}
+                <div class="task-gantt-cell task-gantt-day{{ date.weekday }}">
+                </div>
+              {% endfor %}
+
+              {% if chart %}
+                <div class="task-gantt-bar task-state-{{ task.state }}" style="left:{{ chart.start }}rem; width:{{ chart.length }}rem;"></div>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <p>
+      <a href="{% url 'task:create' %}">タスクを作成する</a>
+    </p>
+
+    {% if is_paginated %}
+      <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+        {% bulma_pagination page_obj %}
+      </nav>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
