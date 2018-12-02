@@ -10,47 +10,43 @@
 {% endblock %}
 
 {% block content %}
-<section class="section">
-  <div class="container">
-    <nav class="breadcrumb is-small" aria-label="breadcrumbs">
-      <ul>
-        <li><a href="{% url 'home:index' %}">トップ</a></li>
-        <li class="is-active"><a href="#">チャット</a></li>
-      </ul>
+  <nav class="breadcrumb is-small" aria-label="breadcrumbs">
+    <ul>
+      <li><a href="{% url 'home:index' %}">トップ</a></li>
+      <li class="is-active"><a href="#">チャット</a></li>
+    </ul>
+  </nav>
+
+  <h2 class="title">チャット</h2>
+
+  <hr>
+
+  {% for channel in object_list %}
+    <a href="{% url 'chat:channel' channel.pk %}" class="chat-channel is-clearfix">
+      <div>
+        {% with channel|channel_userinfo:user|attr:"unread_count" as unread_count %}
+          {% if unread_count %}<span class="is-pulled-right tag is-danger is-small is-rounded">{{ unread_count }}</span>{% endif %}
+        {% endwith %}
+        <span class="chat-name">{{ channel|channel_usernames:user }}</span>
+      </div>
+      <div>
+        <div class="chat-time is-pulled-right">{{ channel.updated_at|naturaltime }}</div>
+        <div class="chat-content-truncate">
+          {{ channel.message_set.last.content }}
+        </div>
+      </div>
+    </a>
+  {% empty %}
+    <p>
+      まだチャットはありません。
+    </p>
+  {% endfor %}
+
+  <p><a href="{% url 'home:user' %}">ユーザーを探す</a></p>
+
+  {% if is_paginated %}
+    <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+      {% bulma_pagination page_obj %}
     </nav>
-
-    <h2 class="title">チャット</h2>
-
-    <hr>
-
-    {% for channel in object_list %}
-      <a href="{% url 'chat:channel' channel.pk %}" class="chat-channel is-clearfix">
-        <div>
-          {% with channel|channel_userinfo:user|attr:"unread_count" as unread_count %}
-            {% if unread_count %}<span class="is-pulled-right tag is-danger is-small is-rounded">{{ unread_count }}</span>{% endif %}
-          {% endwith %}
-          <span class="chat-name">{{ channel|channel_usernames:user }}</span>
-        </div>
-        <div>
-          <div class="chat-time is-pulled-right">{{ channel.updated_at|naturaltime }}</div>
-          <div class="chat-content-truncate">
-            {{ channel.message_set.last.content }}
-          </div>
-        </div>
-      </a>
-    {% empty %}
-      <p>
-        まだチャットはありません。
-      </p>
-    {% endfor %}
-
-    <p><a href="{% url 'home:user' %}">ユーザーを探す</a></p>
-
-    {% if is_paginated %}
-      <nav class="pagination is-centered" role="navigation" aria-label="pagination">
-        {% bulma_pagination page_obj %}
-      </nav>
-    {% endif %}
-  </div>
-</section>
+  {% endif %}
 {% endblock %}

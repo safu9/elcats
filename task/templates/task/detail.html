@@ -9,66 +9,61 @@
 {% endblock %}
 
 {% block content %}
-<section class="section">
-  <div class="container">
-    <nav class="breadcrumb is-small" aria-label="breadcrumbs">
-      <ul>
-        <li><a href="{% url 'home:index' %}">トップ</a></li>
-        <li><a href="{% url 'task:index' %}">タスク</a></li>
-        <li class="is-active"><a href="#">詳細</a></li>
-      </ul>
-    </nav>
+  <nav class="breadcrumb is-small" aria-label="breadcrumbs">
+    <ul>
+      <li><a href="{% url 'home:index' %}">トップ</a></li>
+      <li><a href="{% url 'task:index' %}">タスク</a></li>
+      <li class="is-active"><a href="#">詳細</a></li>
+    </ul>
+  </nav>
 
-    <h2 class="title">#{{ object.pk }} : {{ object.name }}</h2>
+  <h2 class="title">#{{ object.pk }} : {{ object.name }}</h2>
 
-    <hr>
+  <hr>
 
-    <div class="columns">
-      <div class="column is-9">
-        {% if object.description %}
-        	{{ object.description | linebreaks }}
-        {% else %}
-        	<p>このタスクの説明はありません。</p>
+  <div class="columns">
+    <div class="column is-9">
+      {% if object.description %}
+      	{{ object.description | linebreaks }}
+      {% else %}
+      	<p>このタスクの説明はありません。</p>
+      {% endif %}
+
+      <p>作成者 : {{ object.author.username }}</p>
+
+      <p>
+        <a href="{% url 'task:update' object.pk %}" class="button is-light">編集</a>
+        {% if object.author == user %}
+          <a href="{% url 'task:delete' object.pk %}" class="button is-light">削除</a>
         {% endif %}
-
-        <p>作成者 : {{ object.author.username }}</p>
-
-        <p>
-          <a href="{% url 'task:update' object.pk %}" class="button is-light">編集</a>
-          {% if object.author == user %}
-            <a href="{% url 'task:delete' object.pk %}" class="button is-light">削除</a>
-          {% endif %}
-        </p>
-      </div>
-
-      <div class="column is-3 task-detail-info">
-        <h4>状態</h4>
-        <p>
-          <span class="tag is-rounded task-state-tag task-state-{{ object.state }}">{{ object.get_state_display }}</span>
-        </p>
-
-        <h4>日程</h4>
-        <p>
-          {% if object.date_from or object.date_to %}
-            {{ object.date_from|date }} ～ {{ object.date_to|date }}
-          {% else %}
-            なし
-          {% endif %}
-        </p>
-
-        <h4>担当者</h4>
-        <p>
-          {% for assignee in object.assignees.all %}
-            {{ assignee.username }}
-          {% empty %}
-            まだ担当者がいません。
-          {% endfor %}
-        </p>
-      </div>
+      </p>
     </div>
 
-    <hr>
+    <div class="column is-3 task-detail-info">
+      <h4>状態</h4>
+      <p>
+        <span class="tag is-rounded task-state-tag task-state-{{ object.state }}">{{ object.get_state_display }}</span>
+      </p>
 
+      <h4>日程</h4>
+      <p>
+        {% if object.date_from or object.date_to %}
+          {{ object.date_from|date }} ～ {{ object.date_to|date }}
+        {% else %}
+          なし
+        {% endif %}
+      </p>
+
+      <h4>担当者</h4>
+      <p>
+        {% for assignee in object.assignees.all %}
+          {{ assignee.username }}
+        {% empty %}
+          まだ担当者がいません。
+        {% endfor %}
+      </p>
+    </div>
   </div>
-</section>
+
+  <hr>
 {% endblock %}

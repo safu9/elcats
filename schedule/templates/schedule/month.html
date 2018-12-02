@@ -9,64 +9,59 @@
 {% endblock %}
 
 {% block content %}
-<section class="section">
-  <div class="container">
-    <nav class="breadcrumb is-small" aria-label="breadcrumbs">
-      <ul>
-        <li><a href="{% url 'home:index' %}">トップ</a></li>
-        <li><a href="{% url 'schedule:index' %}">予定</a></li>
-        <li class="is-active"><a href="#">月間</a></li>
-      </ul>
-    </nav>
+  <nav class="breadcrumb is-small" aria-label="breadcrumbs">
+    <ul>
+      <li><a href="{% url 'home:index' %}">トップ</a></li>
+      <li><a href="{% url 'schedule:index' %}">予定</a></li>
+      <li class="is-active"><a href="#">月間</a></li>
+    </ul>
+  </nav>
 
-    <h2 class="title">月間予定</h2>
+  <h2 class="title">月間予定</h2>
 
-    <hr>
+  <hr>
 
-    <div class="columns">
-      <div class="column is-clearfix has-text-centered">
-        <a class="is-pulled-left" href="{% url 'schedule:month' calendar.previous.year calendar.previous.month  %}">前月</a>
-        <a class="is-pulled-right" href="{% url 'schedule:month' calendar.next.year calendar.next.month %}">次月</a>
-        <span>{{ calendar.current | date:"Y年n月" }}</span>
-      </div>
+  <div class="columns">
+    <div class="column is-clearfix has-text-centered">
+      <a class="is-pulled-left" href="{% url 'schedule:month' calendar.previous.year calendar.previous.month  %}">前月</a>
+      <a class="is-pulled-right" href="{% url 'schedule:month' calendar.next.year calendar.next.month %}">次月</a>
+      <span>{{ calendar.current | date:"Y年n月" }}</span>
     </div>
-
-    <div class="columns schedule-days is-mobile">
-      {% for day in calendar.days|slice:":7" %}
-        <div class="column schedule-cell">
-          {{ day | date:"D" }}
-        </div>
-      {% endfor %}
-    </div>
-
-    <div class="columns is-multiline is-mobile">
-      {% for date, schedules in calendar.date_list.items %}
-        <div class="column schedule-cell">
-          <div class="schedule-date{% if calendar.now == date %} is-today{% endif %}{% if date.weekday == 6 %} is-sunday{% endif %}">
-            {% if calendar.current.month == date.month %}
-              {{ date | date:"j" }}
-            {% else %}
-              <span class="has-text-grey">{{ date | date:"n/j" }}</span>
-            {% endif %}
-          </div>
-
-          {% for schedule in schedules %}
-            <a href="{% url 'schedule:detail' schedule.pk %}" class="schedule-link">
-              <div>
-                {% if schedule.time_from %}
-                  <div>
-                    {{ schedule.time_from|time:"H:i" }}
-                    {% if schedule.time_to %} ～ {{ schedule.time_to|time:"H:i" }}{% endif %}
-                  </div>
-                {% endif %}
-                <div class="schedule-name-truncate">{{ schedule.name }}</div>
-              </div>
-            </a>
-          {% endfor %}
-        </div>
-      {% endfor %}
-    </div>
-
   </div>
-</section>
+
+  <div class="columns schedule-days is-mobile">
+    {% for day in calendar.days|slice:":7" %}
+      <div class="column schedule-cell">
+        {{ day | date:"D" }}
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="columns is-multiline is-mobile">
+    {% for date, schedules in calendar.date_list.items %}
+      <div class="column schedule-cell">
+        <div class="schedule-date{% if calendar.now == date %} is-today{% endif %}{% if date.weekday == 6 %} is-sunday{% endif %}">
+          {% if calendar.current.month == date.month %}
+            {{ date | date:"j" }}
+          {% else %}
+            <span class="has-text-grey">{{ date | date:"n/j" }}</span>
+          {% endif %}
+        </div>
+
+        {% for schedule in schedules %}
+          <a href="{% url 'schedule:detail' schedule.pk %}" class="schedule-link">
+            <div>
+              {% if schedule.time_from %}
+                <div>
+                  {{ schedule.time_from|time:"H:i" }}
+                  {% if schedule.time_to %} ～ {{ schedule.time_to|time:"H:i" }}{% endif %}
+                </div>
+              {% endif %}
+              <div class="schedule-name-truncate">{{ schedule.name }}</div>
+            </div>
+          </a>
+        {% endfor %}
+      </div>
+    {% endfor %}
+  </div>
 {% endblock %}

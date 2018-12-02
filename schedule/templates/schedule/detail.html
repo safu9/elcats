@@ -9,76 +9,71 @@
 {% endblock %}
 
 {% block content %}
-<section class="section">
-  <div class="container">
-    <nav class="breadcrumb is-small" aria-label="breadcrumbs">
-      <ul>
-        <li><a href="{% url 'home:index' %}">トップ</a></li>
-        <li><a href="{% url 'schedule:index' %}">予定</a></li>
-        <li class="is-active"><a href="#">詳細</a></li>
-      </ul>
-    </nav>
+  <nav class="breadcrumb is-small" aria-label="breadcrumbs">
+    <ul>
+      <li><a href="{% url 'home:index' %}">トップ</a></li>
+      <li><a href="{% url 'schedule:index' %}">予定</a></li>
+      <li class="is-active"><a href="#">詳細</a></li>
+    </ul>
+  </nav>
 
-    <h2 class="title">{{ object.name }}</h2>
+  <h2 class="title">{{ object.name }}</h2>
 
-    <hr>
+  <hr>
 
-    <div class="columns">
-      <div class="column is-9">
-        {% if object.description %}
-        	{{ object.description | linebreaks }}
-        {% else %}
-        	<p>この予定の説明はありません。</p>
-        {% endif %}
+  <div class="columns">
+    <div class="column is-9">
+      {% if object.description %}
+      	{{ object.description | linebreaks }}
+      {% else %}
+      	<p>この予定の説明はありません。</p>
+      {% endif %}
 
-        <p>作成者 : {{ object.author.username }}</p>
+      <p>作成者 : {{ object.author.username }}</p>
 
-        <p>
-          <button type="button" id="participate-button" class="button is-light">
-            {% if user not in object.participants.all %}
-              参加する
-            {% else %}
-              予定を外す
-            {% endif %}
-          </button>
-
-          {% if object.author == user %}
-            <a href="{% url 'schedule:update' object.pk %}" class="button is-light">編集</a>
-            <a href="{% url 'schedule:delete' object.pk %}" class="button is-light">削除</a>
+      <p>
+        <button type="button" id="participate-button" class="button is-light">
+          {% if user not in object.participants.all %}
+            参加する
+          {% else %}
+            予定を外す
           {% endif %}
-        </p>
-      </div>
+        </button>
 
-      <div class="column is-3 schedule-detail-info">
-        <h4>日時</h4>
-        <p>
-          {{ object.date|date }}<br>
-          {% if object.time_from %}
-            {{ object.time_from|time:"H:i" }} ～
-            {% if object.time_to %}{{ object.time_to|time:"H:i" }}{% endif %}
-          {% endif %}
-        </p>
-
-        {% if object.place %}
-          <h4>場所</h4>
-          <p>{{ object.place }}</p>
+        {% if object.author == user %}
+          <a href="{% url 'schedule:update' object.pk %}" class="button is-light">編集</a>
+          <a href="{% url 'schedule:delete' object.pk %}" class="button is-light">削除</a>
         {% endif %}
-
-        <h4>参加者</h4>
-        <p>
-          {% for participant in object.participants.all %}
-            {{ participant.username }}
-          {% empty %}
-            まだ参加者がいません。
-          {% endfor %}
-        </p>
-      </div>
+      </p>
     </div>
 
-    <hr>
+    <div class="column is-3 schedule-detail-info">
+      <h4>日時</h4>
+      <p>
+        {{ object.date|date }}<br>
+        {% if object.time_from %}
+          {{ object.time_from|time:"H:i" }} ～
+          {% if object.time_to %}{{ object.time_to|time:"H:i" }}{% endif %}
+        {% endif %}
+      </p>
 
+      {% if object.place %}
+        <h4>場所</h4>
+        <p>{{ object.place }}</p>
+      {% endif %}
+
+      <h4>参加者</h4>
+      <p>
+        {% for participant in object.participants.all %}
+          {{ participant.username }}
+        {% empty %}
+          まだ参加者がいません。
+        {% endfor %}
+      </p>
+    </div>
   </div>
-</section>
+
+  <hr>
 {% endblock %}
 
 {% block extra_body %}

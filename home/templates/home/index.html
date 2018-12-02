@@ -3,19 +3,15 @@
 {% block title %}ホーム{% endblock %}
 
 {% block content %}
-<section class="section">
-  <div class="container">
-    <h2 class="title">
-      Hello World
-    </h2>
-    <p class="subtitle">
-      This is the first page of Elcats!
-    </p>
-    <p>
-      <a href="{% url 'chat:index' %}">チャット</a>
-      <a href="{% url 'schedule:index' %}">予定</a>
-      <a href="{% url 'task:index' %}">タスク</a>
-    </p>
-  </div>
-</section>
+  <h2 class="title">
+    Hello World
+  </h2>
+  <p class="subtitle">
+    This is the first page of Elcats!
+  </p>
+  <p>
+    <a href="{% url 'chat:index' %}">チャット</a>
+    <a href="{% url 'schedule:index' %}">予定</a>
+    <a href="{% url 'task:index' %}">タスク</a>
+  </p>
 {% endblock %}

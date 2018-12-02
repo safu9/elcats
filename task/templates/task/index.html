@@ -10,62 +10,57 @@
 {% endblock %}
 
 {% block content %}
-<section class="section">
-  <div class="container">
-    <nav class="breadcrumb is-small" aria-label="breadcrumbs">
-      <ul>
-        <li><a href="{% url 'home:index' %}">トップ</a></li>
-        <li class="is-active"><a href="#">タスク</a></li>
-      </ul>
-    </nav>
+  <nav class="breadcrumb is-small" aria-label="breadcrumbs">
+    <ul>
+      <li><a href="{% url 'home:index' %}">トップ</a></li>
+      <li class="is-active"><a href="#">タスク</a></li>
+    </ul>
+  </nav>
 
-    <h2 class="title">タスク</h2>
+  <h2 class="title">タスク</h2>
 
-    <div class="tabs">
-      <ul>
-        <li class="{% if state == 'undone' %}is-active{% endif %}">
-          <a href="{% if state == 'undone' %}#{% else %}?state=undone{% endif %}">未完了</a>
-        </li>
-        <li class="{% if state == 'done' %}is-active{% endif %}">
-          <a href="{% if state == 'done' %}#{% else %}?state=done{% endif %}">完了</a>
-        </li>
-      </ul>
-    </div>
-
-    {% for task in object_list %}
-      <a href="{% url 'task:detail' task.pk %}" class="task-item is-clearfix">
-        <div>
-          <div class="task-name">
-            {{ task.name }}
-          </div>
-        </div>
-        <div>
-          {% if state != 'done' %}
-            <span class="tag is-rounded task-state-tag task-state-{{ task.state }}">{{ task.get_state_display }}</span>
-          {% endif %}
-          <span class="task-info">#{{ task.pk }} {{ task.author.username }}が作成</span>
-        </div>
-      </a>
-    {% empty %}
-      <p>
-        まだタスクがありません。
-      </p>
-    {% endfor %}
-
-    {% if is_paginated %}
-      <nav class="pagination is-centered" role="navigation" aria-label="pagination">
-        {% bulma_pagination page_obj %}
-      </nav>
-    {% endif %}
-
-    <hr>
-
-    <p>
-      <a href="{% url 'task:create' %}">タスクを作成する</a>
-      /
-      <a href="{% url 'task:gantt' %}">ガントチャート</a>
-    </p>
-
+  <div class="tabs">
+    <ul>
+      <li class="{% if state == 'undone' %}is-active{% endif %}">
+        <a href="{% if state == 'undone' %}#{% else %}?state=undone{% endif %}">未完了</a>
+      </li>
+      <li class="{% if state == 'done' %}is-active{% endif %}">
+        <a href="{% if state == 'done' %}#{% else %}?state=done{% endif %}">完了</a>
+      </li>
+    </ul>
   </div>
-</section>
+
+  {% for task in object_list %}
+    <a href="{% url 'task:detail' task.pk %}" class="task-item is-clearfix">
+      <div>
+        <div class="task-name">
+          {{ task.name }}
+        </div>
+      </div>
+      <div>
+        {% if state != 'done' %}
+          <span class="tag is-rounded task-state-tag task-state-{{ task.state }}">{{ task.get_state_display }}</span>
+        {% endif %}
+        <span class="task-info">#{{ task.pk }} {{ task.author.username }}が作成</span>
+      </div>
+    </a>
+  {% empty %}
+    <p>
+      まだタスクがありません。
+    </p>
+  {% endfor %}
+
+  {% if is_paginated %}
+    <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+      {% bulma_pagination page_obj %}
+    </nav>
+  {% endif %}
+
+  <hr>
+
+  <p>
+    <a href="{% url 'task:create' %}">タスクを作成する</a>
+    /
+    <a href="{% url 'task:gantt' %}">ガントチャート</a>
+  </p>
 {% endblock %}

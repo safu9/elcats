@@ -10,69 +10,65 @@
 {% endblock %}
 
 {% block content %}
-<section class="section chat">
-  <div class="container">
-    <nav class="breadcrumb is-small" aria-label="breadcrumbs">
-      <ul>
-        <li><a href="{% url 'home:index' %}">トップ</a></li>
-        <li><a href="{% url 'chat:index' %}">チャット</a></li>
-        <li class="is-active"><a href="#">チャンネル</a></li>
-      </ul>
+  <nav class="breadcrumb is-small" aria-label="breadcrumbs">
+    <ul>
+      <li><a href="{% url 'home:index' %}">トップ</a></li>
+      <li><a href="{% url 'chat:index' %}">チャット</a></li>
+      <li class="is-active"><a href="#">チャンネル</a></li>
+    </ul>
+  </nav>
+
+  <h2 class="title">チャット</h2>
+  <h3 class="subtitle">{{ channel|channel_usernames:user }}</h3>
+
+  <hr>
+
+  {% for message in object_list %}
+    {% ifchanged %}
+      <div class="chat-day">{{ message.posted_at|naturalday }}</div>
+    {% endifchanged %}
+
+    <div class="media">
+      <figure class="media-left">
+        <div class="image is-32x32">
+          {% avatar_img message.user 32 %}
+        </div>
+      </figure>
+      <div class="media-content">
+        <div>
+          <span class="chat-name">{{ message.user.username }}</span>
+          <span class="chat-time">{{ message.posted_at|time:"H:i" }}</span>
+        </div>
+
+        <div class="chat-content">
+          {{ message.content|linebreaks }}
+        </div>
+      </div>
+    </div>
+
+  {% empty %}
+    <p>まだメッセージがありません。</p>
+  {% endfor %}
+
+  <hr>
+
+  <form method="post" autocomplete="off">
+    {% csrf_token %}
+    <div class="field">
+      <div class="control">
+        {{ form | bulma_form }}
+      </div>
+    </div>
+    <div class="field">
+      <div class="control">
+        <input class="button is-primary" type="submit" value="送信">
+      </div>
+    </div>
+  </form>
+
+  {% if is_paginated %}
+    <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+      {% bulma_pagination page_obj %}
     </nav>
-
-    <h2 class="title">チャット</h2>
-    <h3 class="subtitle">{{ channel|channel_usernames:user }}</h3>
-
-    <hr>
-
-    {% for message in object_list %}
-      {% ifchanged %}
-        <div class="chat-day">{{ message.posted_at|naturalday }}</div>
-      {% endifchanged %}
-
-      <div class="media">
-        <figure class="media-left">
-          <div class="image is-32x32">
-            {% avatar_img message.user 32 %}
-          </div>
-        </figure>
-        <div class="media-content">
-          <div>
-            <span class="chat-name">{{ message.user.username }}</span>
-            <span class="chat-time">{{ message.posted_at|time:"H:i" }}</span>
-          </div>
-
-          <div class="chat-content">
-            {{ message.content|linebreaks }}
-          </div>
-        </div>
-      </div>
-
-    {% empty %}
-      <p>まだメッセージがありません。</p>
-    {% endfor %}
-
-    <hr>
-
-    <form method="post" autocomplete="off">
-      {% csrf_token %}
-      <div class="field">
-        <div class="control">
-          {{ form | bulma_form }}
-        </div>
-      </div>
-      <div class="field">
-        <div class="control">
-          <input class="button is-primary" type="submit" value="送信">
-        </div>
-      </div>
-    </form>
-
-    {% if is_paginated %}
-      <nav class="pagination is-centered" role="navigation" aria-label="pagination">
-        {% bulma_pagination page_obj %}
-      </nav>
-    {% endif %}
-  </div>
-</section>
+  {% endif %}
 {% endblock %}

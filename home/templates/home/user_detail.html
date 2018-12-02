@@ -5,29 +5,25 @@
 {% block title %}{{ object.username }}{% endblock %}
 
 {% block content %}
-<section class="section">
-  <div class="container">
-    <nav class="breadcrumb is-small" aria-label="breadcrumbs">
-      <ul>
-        <li><a href="{% url 'home:index' %}">トップ</a></li>
-        <li class="is-active"><a href="#">ユーザー詳細</a></li>
-      </ul>
-    </nav>
+  <nav class="breadcrumb is-small" aria-label="breadcrumbs">
+    <ul>
+      <li><a href="{% url 'home:index' %}">トップ</a></li>
+      <li class="is-active"><a href="#">ユーザー詳細</a></li>
+    </ul>
+  </nav>
 
-    <div class="media">
-      <figure class="media-left">
-        <p class="image is-64x64">
-          {% avatar_img object 64 %}
-        </p>
-      </figure>
-      <div class="media-content">
-        <h2 class="title is-clearfix">{{ object.username }}</h2>
-      </div>
+  <div class="media">
+    <figure class="media-left">
+      <p class="image is-64x64">
+        {% avatar_img object 64 %}
+      </p>
+    </figure>
+    <div class="media-content">
+      <h2 class="title is-clearfix">{{ object.username }}</h2>
     </div>
-
-    <p>
-      <a href="{% url 'chat:new_channel' object.pk %}">チャット</a>
-    </p>
   </div>
-</section>
+
+  <p>
+    <a href="{% url 'chat:new_channel' object.pk %}">チャット</a>
+  </p>
 {% endblock %}
