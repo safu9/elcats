@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load bulma %}
+
+{% block title %}Wiki{% endblock %}
+
+{% block extra_head %}
+  {% comment %}<link rel="stylesheet" href="{% static 'css/wiki.css' %}" />{% endcomment %}
+{% endblock %}
+
+{% block content %}
+  <nav class="breadcrumb is-small" aria-label="breadcrumbs">
+    <ul>
+      <li><a href="{% url 'home:index' %}">トップ</a></li>
+      <li class="is-active"><a href="#">Wiki</a></li>
+    </ul>
+  </nav>
+
+  <h2 class="title">Wiki</h2>
+
+  <hr>
+
+  {% for page in object_list %}
+    <a href="{% url 'wiki:detail' page.slug %}" class="wiki-item is-clearfix">
+      <div class="wiki-name">
+        {{ page.name }}
+      </div>
+    </a>
+  {% empty %}
+    <p>
+      まだページがありません。
+    </p>
+  {% endfor %}
+
+  {% if is_paginated %}
+    <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+      {% bulma_pagination page_obj %}
+    </nav>
+  {% endif %}
+
+  <hr>
+
+  <p>
+    <a href="{% url 'wiki:create' %}">ページを作成する</a>
+  </p>
+{% endblock %}
