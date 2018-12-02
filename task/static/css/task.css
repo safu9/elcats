@@ -4,11 +4,43 @@
   background-color: #ffdd57 !important;
 }
 .task-state-1 {
-  background-color: #00d1b2 !important;
+  background-color: #23d160 !important;
+  color: #fff  !important;;
 }
 .task-state-2 {
   background-color: #d0d0d0 !important;
 }
+
+.task-item {
+	display: block;
+	padding: 8px 16px;
+  color: #000;
+	transition: background-color .2s ease;
+}
+.task-item:hover {
+	background-color: #f7f7f7;
+}
+.task-name {
+  font-weight: bold;
+}
+.task-info {
+  font-size: .9rem;
+  color: #777;
+  margin-left: .2rem;
+}
+.tag.task-state-tag {
+  height: 1.5em;
+  line-height: 1;
+}
+
+.task-detail-info {
+  font-size: .9rem;
+}
+.task-detail-info h4 {
+  font-weight: bold;
+}
+
+/* Gantt Chart */
 
 .task-gantt {
   display: flex;

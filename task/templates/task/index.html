@@ -1,8 +1,13 @@
 {% extends "base.html" %}
 
+{% load static %}
 {% load bulma %}
 
 {% block title %}タスク{% endblock %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'css/task.css' %}" />
+{% endblock %}
 
 {% block content %}
 <section class="section">
@@ -28,10 +33,18 @@
     </div>
 
     {% for task in object_list %}
-      <a href="{% url 'task:detail' task.pk %}">
-        <p>
-          #{{ task.pk }} : {{ task.name }}
-        </p>
+      <a href="{% url 'task:detail' task.pk %}" class="task-item is-clearfix">
+        <div>
+          <div class="task-name">
+            {{ task.name }}
+          </div>
+        </div>
+        <div>
+          {% if state != 'done' %}
+            <span class="tag is-rounded task-state-tag task-state-{{ task.state }}">{{ task.get_state_display }}</span>
+          {% endif %}
+          <span class="task-info">#{{ task.pk }} {{ task.author.username }}が作成</span>
+        </div>
       </a>
     {% empty %}
       <p>
@@ -49,6 +62,7 @@
 
     <p>
       <a href="{% url 'task:create' %}">タスクを作成する</a>
+      /
       <a href="{% url 'task:gantt' %}">ガントチャート</a>
     </p>
 

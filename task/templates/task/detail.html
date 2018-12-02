@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 
+{% load static %}
+
 {% block title %}タスク{% endblock %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'css/task.css' %}" />
+{% endblock %}
 
 {% block content %}
 <section class="section">
@@ -13,55 +19,55 @@
       </ul>
     </nav>
 
-    <h2 class="title">タスク詳細</h2>
-    <h3 class="subtitle">#{{ object.pk }} : {{ object.name }}</h3>
+    <h2 class="title">#{{ object.pk }} : {{ object.name }}</h2>
 
     <hr>
 
-    <div class="content">
-      <h4>説明</h4>
-      {% if object.description %}
-      	{{ object.description | linebreaks }}
-      {% else %}
-      	<p>このタスクの説明はありません。</p>
-      {% endif %}
-
-      <h4>状態</h4>
-      <p>
-        {{ object.get_state_display }}
-      </p>
-
-
-      <h4>日程</h4>
-      <p>
-        {% if object.date_from or object.date_to %}
-          {{ object.date_from|date }} ～ {{ object.date_to|date }}
+    <div class="columns">
+      <div class="column is-9">
+        {% if object.description %}
+        	{{ object.description | linebreaks }}
         {% else %}
-          なし
+        	<p>このタスクの説明はありません。</p>
         {% endif %}
-      </p>
 
-      <h4>作成者</h4>
-      <p>{{ object.author.username }}</p>
+        <p>作成者 : {{ object.author.username }}</p>
 
-      <h4>担当者</h4>
-      <p>
-        {% for assignee in object.assignees.all %}
-          {{ assignee.username }}
-        {% empty %}
-          まだ担当者がいません。
-        {% endfor %}
-      </p>
+        <p>
+          <a href="{% url 'task:update' object.pk %}" class="button is-light">編集</a>
+          {% if object.author == user %}
+            <a href="{% url 'task:delete' object.pk %}" class="button is-light">削除</a>
+          {% endif %}
+        </p>
+      </div>
 
-      <hr>
+      <div class="column is-3 task-detail-info">
+        <h4>状態</h4>
+        <p>
+          <span class="tag is-rounded task-state-tag task-state-{{ object.state }}">{{ object.get_state_display }}</span>
+        </p>
 
-      <p>
-        <a href="{% url 'task:update' object.pk %}" class="button is-text is-small">編集</a>
-        {% if object.author == user %}
-          <a href="{% url 'task:delete' object.pk %}" class="button is-text is-small">削除</a>
-        {% endif %}
-      </p>
+        <h4>日程</h4>
+        <p>
+          {% if object.date_from or object.date_to %}
+            {{ object.date_from|date }} ～ {{ object.date_to|date }}
+          {% else %}
+            なし
+          {% endif %}
+        </p>
+
+        <h4>担当者</h4>
+        <p>
+          {% for assignee in object.assignees.all %}
+            {{ assignee.username }}
+          {% empty %}
+            まだ担当者がいません。
+          {% endfor %}
+        </p>
+      </div>
     </div>
+
+    <hr>
 
   </div>
 </section>
