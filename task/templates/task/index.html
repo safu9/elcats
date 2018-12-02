@@ -16,7 +16,16 @@
 
     <h2 class="title">タスク</h2>
 
-    <hr>
+    <div class="tabs">
+      <ul>
+        <li class="{% if state == 'undone' %}is-active{% endif %}">
+          <a href="{% if state == 'undone' %}#{% else %}?state=undone{% endif %}">未完了</a>
+        </li>
+        <li class="{% if state == 'done' %}is-active{% endif %}">
+          <a href="{% if state == 'done' %}#{% else %}?state=done{% endif %}">完了</a>
+        </li>
+      </ul>
+    </div>
 
     {% for task in object_list %}
       <a href="{% url 'task:detail' task.pk %}">
@@ -30,6 +39,12 @@
       </p>
     {% endfor %}
 
+    {% if is_paginated %}
+      <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+        {% bulma_pagination page_obj %}
+      </nav>
+    {% endif %}
+
     <hr>
 
     <p>
@@ -37,11 +52,6 @@
       <a href="{% url 'task:gantt' %}">ガントチャート</a>
     </p>
 
-    {% if is_paginated %}
-      <nav class="pagination is-centered" role="navigation" aria-label="pagination">
-        {% bulma_pagination page_obj %}
-      </nav>
-    {% endif %}
   </div>
 </section>
 {% endblock %}

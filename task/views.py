@@ -15,6 +15,20 @@ class IndexView(LoginRequiredMixin, generic.ListView):
     model = Task
     paginate_by = 20
 
+    def get_queryset(self):
+        query = super().get_queryset()
+        self.state = self.request.GET.get('state', 'undone')
+        if self.state == 'undone':
+            return query.exclude(state=2)
+        elif self.state == 'done':
+            return query.filter(state=2)
+        return query
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['state'] = self.state
+        return context
+
 
 class GanttView(LoginRequiredMixin, generic.ListView):
     template_name = 'task/gantt.html'
