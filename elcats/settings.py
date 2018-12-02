@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'chat.apps.ChatConfig',
     'schedule.apps.ScheduleConfig',
     'task.apps.TaskConfig',
+    'wiki.apps.WikiConfig',
 ]
 
 MIDDLEWARE = [
