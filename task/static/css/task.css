@@ -1,13 +1,13 @@
 /* task.css */
 
 .task-state-0 {
-  background: #ffdd57;
+  background-color: #ffdd57 !important;
 }
 .task-state-1 {
-  background: #00d1b2;
+  background-color: #00d1b2 !important;
 }
 .task-state-2 {
-  background: #b5b5b5;
+  background-color: #d0d0d0 !important;
 }
 
 .task-gantt {
