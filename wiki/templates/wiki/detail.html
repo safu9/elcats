@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% load humanize static %}
+{% load markdown %}
 
 {% block title %}Wiki{% endblock %}
 
@@ -20,9 +21,9 @@
 
   <hr>
 
-  <div class="contents">
-
-  </div>
+  <article class="content">
+    {{ object.content|markdown2html|safe }}
+  </article>
 
   <p>
     <a href="{% url 'wiki:update' object.slug %}" class="button is-light">編集</a>
