@@ -17,7 +17,6 @@
 </head>
 <body>
   <header class="navbar is-light" role="navigation" aria-label="main navigation">
-    <div class="container">
       <div class="navbar-brand">
         <a class="navbar-item navbar-logo" href="/"><img src="{% static 'img/logo.png' %}" alt="Elcats"/></a>
 
@@ -47,12 +46,25 @@
           {% endif %}
         </div>
       </div>
-    </div>
   </header>
 
   <section class="section">
-    <div class="container">
-      {% block content %}{% endblock %}
+    <div class="columns">
+      <div class="column is-2 is-hidden-touch sidemenu">
+        <aside class="menu">
+          <ul class="menu-list">
+            <li><a href="{% url 'home:index' %}">ホーム</a></li>
+            <li><a href="{% url 'task:index' %}">タスク</a></li>
+            <li><a href="{% url 'schedule:index' %}">予定</a></li>
+            <li><a href="{% url 'chat:index' %}">チャット</a></li>
+          </ul>
+        </aside>
+      </div>
+      <div class="column is-10">
+        <div class="container is-fullhd">
+          {% block content %}{% endblock %}
+        </div>
+      </div>
     </div>
   </section>
 

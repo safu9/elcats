@@ -25,6 +25,10 @@ p {
   }
 }
 
+.sidemenu {
+  max-width: 200px;
+}
+
 .pagination-ellipsis {
   pointer-events: auto;
 }
