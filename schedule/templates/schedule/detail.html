@@ -34,13 +34,13 @@
         <p>作成者 : {{ object.author.username }}</p>
 
         <p>
-          {% comment %}
-          {% if user not in object.participants.all %}
-            <a href="{% url 'schedule:participate' object.pk %}" class="button is-light">参加する</a>
-          {% else %}
-            <a href="{% url 'schedule:participate' object.pk %}?cancel=true" class="button is-light">予定を外す</a>
-          {% endif %}
-          {% endcomment %}
+          <button type="button" id="participate-button" class="button is-light">
+            {% if user not in object.participants.all %}
+              参加する
+            {% else %}
+              予定を外す
+            {% endif %}
+          </button>
 
           {% if object.author == user %}
             <a href="{% url 'schedule:update' object.pk %}" class="button is-light">編集</a>
@@ -79,4 +79,32 @@
 
   </div>
 </section>
+{% endblock %}
+
+{% block extra_body %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/url-search-params/1.1.0/url-search-params.js"></script>
+<script src="https://unpkg.com/axios@0.18.0/dist/axios.min.js"></script>
+<script>
+  var config = {
+    xsrfCookieName: 'csrftoken',
+    xsrfHeaderName: 'X-CSRFToken',
+  };
+
+  var isParticipated = {% if user in object.participants.all %}true{% else %}false{% endif %};
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var $participateButton = document.getElementById('participate-button')
+    $participateButton.addEventListener('click', function () {
+      var params = new URLSearchParams();
+      params.append('action', (!isParticipated) ? 'add' : 'remove');
+
+      axios.post(
+        '{% url "schedule:participate" object.pk %}', params, config
+      ).then(function (res) {
+        isParticipated = !isParticipated;
+        $participateButton.innerHTML = (!isParticipated) ? '参加する' : '予定を外す';
+      });
+    });
+  });
+</script>
 {% endblock %}
