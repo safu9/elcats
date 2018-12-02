@@ -1,5 +1,14 @@
 /* schedule.css */
 
+.schedule-detail-info {
+  font-size: .9rem;
+}
+.schedule-detail-info h4 {
+  font-weight: bold;
+}
+
+/* Calendar */
+
 .schedule-cell {
   flex: none;
   width: 14.2857%;
