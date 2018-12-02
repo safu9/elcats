@@ -4,8 +4,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.views import generic
+from django.views.generic.edit import FormMixin
 
-from .forms import ScheduleForm
+from .forms import ScheduleForm, ScheduleCommentForm
 from .mixins import MonthCalendarMixin, WeekCalendarMixin
 from .models import Schedule
 
@@ -78,9 +79,28 @@ class CreateView(LoginRequiredMixin, generic.CreateView):
         return reverse('schedule:detail', args=(self.object.pk,))
 
 
-class DetailView(LoginRequiredMixin, generic.DetailView):
+class DetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
     template_name = 'schedule/detail.html'
     model = Schedule
+    form_class = ScheduleCommentForm
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return redirect(self.get_success_url())
+
+    def form_valid(self, form):
+        task = form.save(commit=False)
+        task.schedule = self.object
+        task.user = self.request.user
+        task.save()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('schedule:detail', args=(self.object.pk,))
 
 
 class UpdateView(UserPassesTestMixin, generic.UpdateView):

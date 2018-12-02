@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
-{% load static %}
+{% load humanize static %}
+{% load avatar bulma %}
 
 {% block title %}予定{% endblock %}
 
@@ -74,6 +75,42 @@
   </div>
 
   <hr>
+
+  <div class="schedule-comments">
+    {% for comment in object.schedulecomment_set.all %}
+      <div class="media schedule-comment">
+        <figure class="media-left">
+          <div class="image is-32x32">
+            {% avatar_img comment.user 32 %}
+          </div>
+        </figure>
+        <div class="media-content">
+          <div>
+            <span class="schedule-comment-name">{{ comment.user.username }}</span>
+            <span class="schedule-comment-time">{{ comment.posted_at|naturaltime }}</span>
+          </div>
+
+          <div class="schedule-comment-content">
+            {{ comment.content|linebreaks }}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <form method="post" autocomplete="off">
+    {% csrf_token %}
+    <div class="field">
+      <div class="control">
+        {{ form | bulma_form }}
+      </div>
+    </div>
+    <div class="field">
+      <div class="control">
+        <input class="button is-primary" type="submit" value="送信">
+      </div>
+    </div>
+  </form>
 {% endblock %}
 
 {% block extra_body %}

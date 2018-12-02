@@ -40,3 +40,18 @@ class ScheduleOccurence(models.Model):
     class Meta:
         verbose_name = '実予定'
         verbose_name_plural = '実予定'
+
+
+class ScheduleComment(models.Model):
+
+    schedule = models.ForeignKey(Schedule, on_delete=models.CASCADE, verbose_name='予定')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='ユーザー')
+    content = models.TextField('内容')
+    posted_at = models.DateTimeField('投稿日時', auto_now_add=True)
+
+    def __str__(self):
+        return self.user.username + ': ' + self.content
+
+    class Meta:
+        verbose_name = 'コメント'
+        verbose_name_plural = 'コメント'

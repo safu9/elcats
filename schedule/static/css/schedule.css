@@ -7,6 +7,35 @@
   font-weight: bold;
 }
 
+/* Comment */
+
+.schedule-comments {
+  margin-bottom: 1.5rem;
+}
+
+.schedule-comment.media {
+  border-top: none;
+  padding-top: 0;
+}
+.schedule-comment.media .avatar {
+  margin-top: .3rem;
+}
+.schedule-comment .media-left {
+  margin-right: .7rem;
+}
+
+.schedule-comment-name {
+	font-weight: bold;
+}
+.schedule-comment-time {
+  font-size: .8em;
+  line-height: 1.875;
+  color: gray;
+}
+.schedule-comment-content p {
+	margin-bottom: 0;
+}
+
 /* Calendar */
 
 .schedule-cell {
