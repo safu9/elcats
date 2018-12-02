@@ -1,7 +1,6 @@
 import datetime
 
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.views import generic
@@ -117,19 +116,3 @@ class DeleteView(UserPassesTestMixin, generic.DeleteView):
             self.raise_exception = True
             return False
         return True
-
-
-class ParticipateView(LoginRequiredMixin, generic.DeleteView):
-    http_method_names = ['post']
-    model = Schedule
-
-    def post(self, request, *args, **kwargs):
-        action = request.POST.get('action', None)
-        self.object = self.get_object()
-        if action == 'add':
-            self.object.participants.add(request.user)
-        elif action == 'remove':
-            self.object.participants.remove(request.user)
-        else:
-            return HttpResponse(action, status=400)
-        return HttpResponse(status=200)

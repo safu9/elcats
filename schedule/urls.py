@@ -1,6 +1,6 @@
 from django.urls import path
 
-from . import views
+from . import apis, views
 
 
 app_name = 'schedule'
@@ -14,5 +14,6 @@ urlpatterns = [
     path('<int:pk>/', views.DetailView.as_view(), name='detail'),
     path('<int:pk>/update/', views.UpdateView.as_view(), name='update'),
     path('<int:pk>/delete/', views.DeleteView.as_view(), name='delete'),
-    path('<int:pk>/participate/', views.ParticipateView.as_view(), name='participate'),
+
+    path('api/participate/', apis.set_participant, name='participant_api'),
 ]

@@ -77,7 +77,6 @@
 {% endblock %}
 
 {% block extra_body %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/url-search-params/1.1.0/url-search-params.js"></script>
 <script src="https://unpkg.com/axios@0.18.0/dist/axios.min.js"></script>
 <script>
   var config = {
@@ -85,16 +84,16 @@
     xsrfHeaderName: 'X-CSRFToken',
   };
 
+  var pk = {{ object.pk }};
   var isParticipated = {% if user in object.participants.all %}true{% else %}false{% endif %};
 
   document.addEventListener('DOMContentLoaded', function () {
     var $participateButton = document.getElementById('participate-button')
     $participateButton.addEventListener('click', function () {
-      var params = new URLSearchParams();
-      params.append('action', (!isParticipated) ? 'add' : 'remove');
+      var action = (!isParticipated) ? 'add' : 'remove';
 
       axios.post(
-        '{% url "schedule:participate" object.pk %}', params, config
+        '{% url "schedule:participant_api" %}', {pk: pk, action: action}, config
       ).then(function (res) {
         isParticipated = !isParticipated;
         $participateButton.innerHTML = (!isParticipated) ? '参加する' : '予定を外す';
