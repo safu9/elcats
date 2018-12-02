@@ -80,6 +80,12 @@
     </div>
   </footer>
 
+  <div class="notification is-primary" id="toast">
+    <button class="delete" id="toast-delete"></button>
+    <div id="toast-content">
+    </div>
+  </div>
+
   {% block extra_body %}{% endblock %}
   <script>
   document.addEventListener('DOMContentLoaded', function () {
@@ -90,7 +96,29 @@
       $navbarBurger.classList.toggle('is-active');
       $navbarMenu.classList.toggle('is-active');
     });
+
+    document.getElementById('toast-delete').addEventListener('click', function () {
+      var $toast = document.getElementById('toast');
+      $toast.classList.remove('is-active');
+      $toast.classList.remove('is-activated');
+    })
   });
+
+  function toast(msg) {
+    var $toast = document.getElementById('toast');
+    $toast.children[1].innerHTML = msg;
+    $toast.classList.add('is-activated');
+
+    window.setTimeout(function() {
+      $toast.classList.add('is-active');
+    }, 100);
+    window.setTimeout(function() {
+      $toast.classList.remove('is-active');
+    }, 3000);
+    window.setTimeout(function() {
+      $toast.classList.remove('is-activated');
+    }, 3500);
+  }
   </script>
 </body>
 </html>

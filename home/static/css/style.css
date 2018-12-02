@@ -29,6 +29,21 @@ p {
   max-width: 200px;
 }
 
+#toast {
+  display: none;
+  position: absolute;
+  bottom: 0;
+  left: 1rem;
+  transition: opacity 0.5s ease;
+  opacity: 0;
+}
+#toast.is-activated {
+  display: block;
+}
+#toast.is-active {
+  opacity: 1;
+}
+
 .pagination-ellipsis {
   pointer-events: auto;
 }
