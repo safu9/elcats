@@ -15,10 +15,10 @@ def update_channel(sender, instance, created, update_fields, **kwargs):
     channel.updated_at = timezone.now()
     channel.save()
 
-    for channelInfo in channel.userinfo.exclude(user=instance.user).all():
-        channelInfo.unread_count = F('unread_count') + 1
-        channelInfo.save()
+    for membership in channel.channelmembership_set.exclude(user=instance.user):
+        membership.unread_count = F('unread_count') + 1
+        membership.save()
 
-        userInfo = getattr(channelInfo.user, 'chatinfo', None)
+        userInfo = getattr(membership.user, 'chatinfo', None)
         userInfo.unread_count = F('unread_count') + 1
         userInfo.save()

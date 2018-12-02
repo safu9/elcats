@@ -7,7 +7,7 @@ from django.views import generic
 from django.views.generic.edit import FormMixin
 
 from .forms import MessageForm
-from .models import Channel
+from .models import Channel, ChannelMembership
 
 
 class IndexView(LoginRequiredMixin, generic.ListView):
@@ -16,7 +16,12 @@ class IndexView(LoginRequiredMixin, generic.ListView):
     paginate_by = 20
 
     def get_queryset(self):
-        return Channel.objects.filter(userinfo__user=self.request.user).all().order_by('-updated_at')
+        return Channel.objects.filter(members=self.request.user).all().order_by('-updated_at')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['object_list'] = [(ch, ch.channelmembership_set.get(user=self.request.user)) for ch in context['object_list']]
+        return super().get_context_data(**context)
 
 
 class ChannelView(UserPassesTestMixin, FormMixin, generic.ListView):
@@ -34,16 +39,16 @@ class ChannelView(UserPassesTestMixin, FormMixin, generic.ListView):
         if not self.request.user.is_authenticated:
             return False
 
-        if not self.object.userinfo.filter(user=self.request.user).exists():
+        if not self.object.members.filter(pk=self.request.user.pk).exists():
             self.raise_exception = True
             return False
         return True
 
     def get(self, request, *args, **kwargs):
-        info = self.object.get_info(request.user)
-        if info.unread_count > 0:
-            info.unread_count = 0
-            info.save()
+        membership = self.object.channelmembership_set.get(user=request.user)
+        if membership.unread_count > 0:
+            membership.unread_count = 0
+            membership.save()
 
         return super().get(request, *args, **kwargs)
 
@@ -90,7 +95,7 @@ class NewChannelView(LoginRequiredMixin, FormMixin, generic.DetailView):
         if self.object.id == request.user.id:
             return HttpResponseRedirect(reverse('chat:index'))
 
-        channel = Channel.objects.filter_by_users([request.user, self.object]).first()
+        channel = Channel.objects.filter_by_members([request.user, self.object]).first()
         if channel:
             return HttpResponseRedirect(reverse('chat:channel', args=(channel.pk,)))
 
@@ -104,9 +109,10 @@ class NewChannelView(LoginRequiredMixin, FormMixin, generic.DetailView):
             return redirect(request.build_absolute_uri())
 
     def form_valid(self, form):
-        self.channel = Channel()
-        self.channel.save()
-        self.channel.add_users([self.request.user, self.object])
+        self.channel = Channel.objects.create()
+
+        ChannelMembership.objects.create(channel=self.channel, user=self.request.user)
+        ChannelMembership.objects.create(channel=self.channel, user=self.object)
 
         message = form.save(commit=False)
         message.channel = self.channel

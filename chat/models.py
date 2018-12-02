@@ -18,58 +18,44 @@ class ChatUserInfo(models.Model):
 
 
 class ChannelQuerySet(models.QuerySet):
-    def filter_by_users(self, users):
-        query = self.annotate(count=Count('userinfo')).filter(count=len(users))
+    def filter_by_members(self, users):
+        query = self.annotate(count=Count('members')).filter(count=len(users))
         for user in users:
-            query = query.filter(userinfo__user=user)
+            query = query.filter(members=user)
         return query
 
 
 class Channel(models.Model):
 
     name = models.CharField('名前', max_length=50)
+    members = models.ManyToManyField(settings.AUTH_USER_MODEL, through='ChannelMembership', verbose_name='メンバー')
     updated_at = models.DateTimeField('更新日時', default=timezone.now)
 
     objects = ChannelQuerySet.as_manager()
 
-    def add_users(self, users):
-        for user in users:
-            if not getattr(user, 'chatinfo', None):
-                info = ChatUserInfo()
-                info.user = user
-                info.save()
-
-            userInfo = ChannelUserInfo()
-            userInfo.channel = self
-            userInfo.user = user
-            userInfo.save()
-
-    def get_info(self, user):
-        return self.userinfo.get(user=user)
-
     def get_usernames(self, user):
-        return ', '.join([info.user.username for info in self.userinfo.exclude(user=user)])
+        return ', '.join([member.username for member in self.members.exclude(pk=user.pk)])
 
     def __str__(self):
-        return str(self.id) + ': ' + ', '.join([info.user.username for info in self.userinfo.all()])
+        return str(self.id) + ': ' + ', '.join([member.username for member in self.members.all()])
 
     class Meta:
         verbose_name = 'チャンネル'
         verbose_name_plural = 'チャンネル'
 
 
-class ChannelUserInfo(models.Model):
+class ChannelMembership(models.Model):
 
-    channel = models.ForeignKey(Channel, on_delete=models.CASCADE, related_name='userinfo', verbose_name='チャンネル')
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='channelinfo', verbose_name='ユーザー')
+    channel = models.ForeignKey(Channel, on_delete=models.CASCADE, verbose_name='チャンネル')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='ユーザー')
     unread_count = models.PositiveIntegerField('未読数', default=0)
 
     def __str__(self):
         return str(self.channel.id) + ': ' + self.user.username
 
     class Meta:
-        verbose_name = 'チャンネルユーザー情報'
-        verbose_name_plural = 'チャンネルユーザー情報'
+        verbose_name = 'チャンネルメンバーシップ'
+        verbose_name_plural = 'チャンネルメンバーシップ'
 
         unique_together = ('channel', 'user')
 
