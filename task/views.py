@@ -5,8 +5,9 @@ from django.db.models import Max, Min
 from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.views import generic
+from django.views.generic.edit import FormMixin
 
-from .forms import TaskForm
+from .forms import TaskForm, TaskCommentForm
 from .models import Task
 
 
@@ -110,9 +111,28 @@ class CreateView(LoginRequiredMixin, generic.CreateView):
         return reverse('task:detail', args=(self.object.pk,))
 
 
-class DetailView(LoginRequiredMixin, generic.DetailView):
+class DetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
     template_name = 'task/detail.html'
     model = Task
+    form_class = TaskCommentForm
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return redirect(self.get_success_url())
+
+    def form_valid(self, form):
+        task = form.save(commit=False)
+        task.task = self.object
+        task.user = self.request.user
+        task.save()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('task:detail', args=(self.object.pk,))
 
 
 class UpdateView(LoginRequiredMixin, generic.UpdateView):

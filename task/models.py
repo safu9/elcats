@@ -25,3 +25,18 @@ class Task(models.Model):
     class Meta:
         verbose_name = 'タスク'
         verbose_name_plural = 'タスク'
+
+
+class TaskComment(models.Model):
+
+    task = models.ForeignKey(Task, on_delete=models.CASCADE, verbose_name='タスク')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='ユーザー')
+    content = models.TextField('内容')
+    posted_at = models.DateTimeField('投稿日時', auto_now_add=True)
+
+    def __str__(self):
+        return self.user.username + ': ' + self.content
+
+    class Meta:
+        verbose_name = 'コメント'
+        verbose_name_plural = 'コメント'

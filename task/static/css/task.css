@@ -40,6 +40,35 @@
   font-weight: bold;
 }
 
+/* Comment */
+
+.task-comments {
+  margin-bottom: 1.5rem;
+}
+
+.task-comment.media {
+  border-top: none;
+  padding-top: 0;
+}
+.task-comment.media .avatar {
+  margin-top: .3rem;
+}
+.task-comment .media-left {
+  margin-right: .7rem;
+}
+
+.task-comment-name {
+	font-weight: bold;
+}
+.task-comment-time {
+  font-size: .8em;
+  line-height: 1.875;
+  color: gray;
+}
+.task-comment-content p {
+	margin-bottom: 0;
+}
+
 /* Board */
 
 .task-board {

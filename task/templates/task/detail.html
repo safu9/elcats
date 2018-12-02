@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
-{% load static %}
+{% load humanize static %}
+{% load avatar bulma %}
 
 {% block title %}タスク{% endblock %}
 
@@ -66,4 +67,40 @@
   </div>
 
   <hr>
+
+  <div class="task-comments">
+    {% for comment in object.taskcomment_set.all %}
+      <div class="media task-comment">
+        <figure class="media-left">
+          <div class="image is-32x32">
+            {% avatar_img comment.user 32 %}
+          </div>
+        </figure>
+        <div class="media-content">
+          <div>
+            <span class="task-comment-name">{{ comment.user.username }}</span>
+            <span class="task-comment-time">{{ comment.posted_at|naturaltime }}</span>
+          </div>
+
+          <div class="task-comment-content">
+            {{ comment.content|linebreaks }}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <form method="post" autocomplete="off">
+    {% csrf_token %}
+    <div class="field">
+      <div class="control">
+        {{ form | bulma_form }}
+      </div>
+    </div>
+    <div class="field">
+      <div class="control">
+        <input class="button is-primary" type="submit" value="送信">
+      </div>
+    </div>
+  </form>
 {% endblock %}
