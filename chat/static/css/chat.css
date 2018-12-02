@@ -36,13 +36,13 @@
   word-break: break-all;
 }
 
-.chat .media {
+.media.chat-media {
   border-top: none;
   padding-top: 0;
 }
-.chat .media .avatar {
+.media.chat-media .avatar {
   margin-top: .3rem;
 }
-.chat .media-left {
+.media.chat-media .media-left {
   margin-right: .7rem;
 }
