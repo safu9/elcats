@@ -16,6 +16,7 @@ def bulma_form(value, autoescape=True):
 
     value = value.replace('input type="text" ', 'input type="text" class="input" ')
     value = value.replace('input type="date" ', 'input type="date" class="input" ')
+    value = value.replace('input type="email" ', 'input type="email" class="input" ')
     value = value.replace('input type="password" ', 'input type="password" class="input" ')
     value = value.replace('textarea ', 'textarea class="textarea" ')
 
