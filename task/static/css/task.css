@@ -40,6 +40,34 @@
   font-weight: bold;
 }
 
+/* Board */
+
+.task-board {
+  min-height: 3rem;
+  padding-bottom: 1rem;
+}
+.task-board-ghost {
+	background-color: #f7f7f7;
+}
+
+.task-board .task-item {
+  margin: -0.5rem -0.75rem;
+  padding: .75rem;
+}
+
+@media screen and (max-width: 768px) {
+  .task-board .task-item {
+    margin: 0;
+    padding: 2px;
+  }
+  .task-board .task-name {
+    font-size: 1rem;
+    line-height: 1.5;
+    max-height: 4.5rem;
+    overflow: hidden;
+  }
+}
+
 /* Gantt Chart */
 
 .task-gantt {

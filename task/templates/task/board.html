@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load bulma %}
+
+{% block title %}タスク{% endblock %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'css/task.css' %}" />
+{% endblock %}
+
+{% block content %}
+  <nav class="breadcrumb is-small" aria-label="breadcrumbs">
+    <ul>
+      <li><a href="{% url 'home:index' %}">トップ</a></li>
+      <li><a href="{% url 'task:index' %}">タスク</a></li>
+      <li class="is-active"><a href="#">ボード</a></li>
+    </ul>
+  </nav>
+
+  <h2 class="title">タスク</h2>
+
+  <div class="columns is-mobile">
+    {% for state_name, tasks in task_list %}
+      <div class="column">
+        <p>
+          <span class="tag is-rounded task-state-tag task-state-{{ forloop.counter0 }}">{{ state_name }}</span>
+        </p>
+        <div class="task-board" id="task-board{{ forloop.counter0 }}">
+          {% for task in tasks %}
+            <a href="{% url 'task:detail' task.pk %}" class="task-item is-clearfix" id="task-item{{ task.pk }}">
+              <div>
+                <div class="task-name">
+                  {{ task.name }}
+                </div>
+              </div>
+              <div>
+                <span class="task-info">#{{ task.pk }} {{ task.author.username }}が作成</span>
+              </div>
+            </a>
+          {% endfor %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  {% if is_paginated %}
+    <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+      {% bulma_pagination page_obj %}
+    </nav>
+  {% endif %}
+
+  <hr>
+{% endblock %}
+
+{% block extra_body %}
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.6.1/Sortable.min.js"></script>
+<script src="https://unpkg.com/axios@0.18.0/dist/axios.min.js"></script>
+<script>
+  var config = {
+    xsrfCookieName: 'csrftoken',
+    xsrfHeaderName: 'X-CSRFToken',
+  };
+
+  var $list = document.getElementsByClassName('task-board');
+
+  for(var i = 0; i < $list.length; i++){
+    Sortable.create($list[i], {
+      group: 'task',
+      animation: 100,
+      ghostClass: 'task-board-ghost',
+      onEnd: function (evt) {
+        var pk = evt.item.id.slice(9);
+        var state = evt.item.parentNode.id.slice(10);
+
+        axios.post('{% url "task:state_api" %}', {pk: pk, state: state}, config);
+    	},
+    });
+  }
+
+</script>
+{% endblock %}

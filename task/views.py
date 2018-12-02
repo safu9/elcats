@@ -30,6 +30,19 @@ class IndexView(LoginRequiredMixin, generic.ListView):
         return context
 
 
+class BoardView(LoginRequiredMixin, generic.TemplateView):
+    template_name = 'task/board.html'
+
+    def get_context_data(self, **kwargs):
+        task_list = []
+        for i, name in Task.STATES:
+            task_list.append((name, Task.objects.filter(state=i)))
+
+        context = super().get_context_data(**kwargs)
+        context['task_list'] = task_list
+        return context
+
+
 class GanttView(LoginRequiredMixin, generic.ListView):
     template_name = 'task/gantt.html'
     model = Task
