@@ -1,3 +1,4 @@
 Django==2.1
 django-recurrence==1.8.1
-markdown==3.0.1
+markdown==2.6.11
+py-gfm==0.1.4
