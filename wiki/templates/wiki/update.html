@@ -52,9 +52,5 @@
 
 {% block extra_body %}
 <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
-<script>
-  var simplemde = new SimpleMDE({
-    spellChecker: false,
-  });
-</script>
+<script src="{% static 'js/wiki.js' %}"></script>
 {% endblock %}
