@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'recurrence',
 
     'home.apps.HomeConfig',
+    'account.apps.AccountConfig',
     'chat.apps.ChatConfig',
     'schedule.apps.ScheduleConfig',
     'task.apps.TaskConfig',
