@@ -35,10 +35,10 @@
               </a>
 
               <div class="navbar-dropdown is-right">
-                <a class="navbar-item" href="{% url 'home:user_detail' user.username %}">
+                <a class="navbar-item" href="{% url 'account:user_detail' user.username %}">
                   マイページ
                 </a>
-                <a class="navbar-item" href="{% url 'home:logout' %}">
+                <a class="navbar-item" href="{% url 'account:logout' %}">
                   ログアウト
                 </a>
               </div>
