@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% load bulma %}
+
+{% block title %}プロジェクト{% endblock %}
+
+{% block content %}
+  <nav class="breadcrumb is-small" aria-label="breadcrumbs">
+    <ul>
+      <li><a href="{% url 'home:index' %}">トップ</a></li>
+      <li class="is-active"><a href="#">プロジェクト</a></li>
+    </ul>
+  </nav>
+
+  <h2 class="title">プロジェクト</h2>
+
+  <hr>
+
+  {% for project in object_list %}
+    <a href="{% url 'home:project_detail' project.slug %}">
+      <div>
+        {{ project.name }}
+      </div>
+    </a>
+  {% empty %}
+    <p>
+      まだプロジェクトがありません。
+    </p>
+  {% endfor %}
+
+  {% if is_paginated %}
+    <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+      {% bulma_pagination page_obj %}
+    </nav>
+  {% endif %}
+
+  <hr>
+
+  <p>
+    <a href="{% url 'home:project_create' %}">プロジェクトを作成する</a>
+  </p>
+{% endblock %}

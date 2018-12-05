@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% load bulma %}
+
+{% block title %}プロジェクト{% endblock %}
+
+{% block content %}
+  <nav class="breadcrumb is-small" aria-label="breadcrumbs">
+    <ul>
+      <li><a href="{% url 'home:index' %}">トップ</a></li>
+      <li><a href="{% url 'home:project_list' %}">プロジェクト</a></li>
+      <li class="is-active"><a href="#">詳細</a></li>
+    </ul>
+  </nav>
+
+  <h2 class="title">{{ object.name }}</h2>
+
+  <hr>
+
+  <div class="columns">
+    <div class="column is-9">
+      {% if object.description %}
+      	{{ object.description }}
+      {% else %}
+      	<p>このプロジェクトの説明はありません。</p>
+      {% endif %}
+
+      <p>
+        <a href="{% url 'home:project_update' object.slug %}" class="button is-light">編集</a>
+        <a href="{% url 'home:project_delete' object.slug %}" class="button is-light">削除</a>
+      </p>
+    </div>
+
+    <div class="column is-3">
+      <h4>メンバー</h4>
+      <p>
+        {% for member in object.members.all %}
+          {{ member.username }}
+        {% endfor %}
+      </p>
+    </div>
+  </div>
+
+  <hr>
+{% endblock %}

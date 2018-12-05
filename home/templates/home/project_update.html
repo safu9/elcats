@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% load bulma %}
+
+{% block title %}プロジェクト{% endblock %}
+
+{% block content %}
+  <nav class="breadcrumb is-small" aria-label="breadcrumbs">
+    <ul>
+      <li><a href="{% url 'home:index' %}">トップ</a></li>
+      <li><a href="{% url 'home:project_list' %}">プロジェクト</a></li>
+      <li><a href="{% url 'home:project_detail' object.slug %}">詳細</a></li>
+      <li class="is-active"><a href="#">編集</a></li>
+    </ul>
+  </nav>
+
+  <h2 class="title">プロジェクト編集</h2>
+
+  <hr>
+
+  <form method="post">
+    {% csrf_token %}
+
+    {% for error in form.non_field_errors %}
+      <p class="has-text-danger">{{ error }}</p>
+    {% endfor %}
+
+    {% for field in form %}
+      <div class="field columns is-gapless">
+        <div class="column is-2">
+          <label class="label">{{ field.label }}</label>
+        </div>
+        <div class="column is-10">
+          <div class="control">
+            {{ field | bulma_form }}
+          </div>
+          {% for error in field.errors %}
+            <p class="help is-danger">{{ error }}</p>
+          {% endfor %}
+        </div>
+      </div>
+    {% endfor %}
+
+    <div class="field">
+      <div class="control">
+        <input class="button is-primary" type="submit" value="更新">
+      </div>
+    </div>
+  </form>
+{% endblock %}
