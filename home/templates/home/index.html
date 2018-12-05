@@ -1,6 +1,20 @@
-{% extends "base.html" %}
+{% extends "base_sidemenu.html" %}
 
 {% block title %}ホーム{% endblock %}
+
+{% block sidemenu %}
+  <aside class="menu">
+    <p class="menu-label">
+      プロジェクト一覧
+    </p>
+    <ul class="menu-list">
+      {% for project in object_list %}
+        <li><a href="{% url 'home:project_detail' project.slug %}">{{ project.name }}</a></li>
+      {% endfor %}
+      <li><a href="{% url 'home:project_create' %}">プロジェクトを作成する</a></li>
+    </ul>
+  </aside>
+{% endblock %}
 
 {% block content %}
   <h2 class="title">

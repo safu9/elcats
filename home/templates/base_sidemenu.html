@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block main %}
+  <div class="columns">
+    <div class="column is-2 is-hidden-touch sidemenu">
+      {% block sidemenu %}{% endblock %}
+    </div>
+    <div class="column is-10">
+      <div class="container is-fullhd">
+        {% block content %}{% endblock %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

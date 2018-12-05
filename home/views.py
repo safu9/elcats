@@ -7,8 +7,9 @@ from .mixins import ProjectAccessMixin
 from .models import Project
 
 
-class IndexView(LoginRequiredMixin, generic.TemplateView):
+class IndexView(LoginRequiredMixin, generic.ListView):
     template_name = 'home/index.html'
+    model = Project
 
 
 class ProjectListView(LoginRequiredMixin, generic.ListView):
