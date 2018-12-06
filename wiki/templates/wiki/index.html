@@ -13,6 +13,7 @@
   <nav class="breadcrumb is-small" aria-label="breadcrumbs">
     <ul>
       <li><a href="{% url 'home:index' %}">トップ</a></li>
+      <li><a href="{% url 'home:project_detail' project.slug %}">{{ project.name }}</a></li>
       <li class="is-active"><a href="#">Wiki</a></li>
     </ul>
   </nav>
@@ -22,7 +23,7 @@
   <hr>
 
   {% for page in object_list %}
-    <a href="{% url 'wiki:detail' page.slug %}" class="wiki-item is-clearfix">
+    <a href="{% url 'wiki:detail' project.slug page.slug %}" class="wiki-item is-clearfix">
       <div class="wiki-name">
         {{ page.name }}
       </div>
@@ -42,6 +43,6 @@
   <hr>
 
   <p>
-    <a href="{% url 'wiki:create' %}">ページを作成する</a>
+    <a href="{% url 'wiki:create' project.slug %}">ページを作成する</a>
   </p>
 {% endblock %}

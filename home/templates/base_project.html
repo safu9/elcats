@@ -7,9 +7,9 @@
       {% if project %}
         <li><a href="{% url 'task:index' project.slug %}">タスク</a></li>
         <li><a href="{% url 'schedule:index' project.slug %}">予定</a></li>
+        <li><a href="{% url 'wiki:index' project.slug %}">Wiki</a></li>
       {% endif %}
       <li><a href="{% url 'chat:index' %}">チャット</a></li>
-      <li><a href="{% url 'wiki:index' %}">Wiki</a></li>
       <li><a href="#" class="has-text-grey-light">ファイル</a></li>
       <li><a href="#" class="has-text-grey-light">コード</a></li>
       <li><a href="#" class="has-text-grey-light">設定</a></li>
