@@ -19,12 +19,8 @@ class CreateView(ProjectMixin, generic.CreateView):
     template_name = 'wiki/create.html'
     form_class = PageForm
 
-    def form_valid(self, form):
-        self.object = form.save(commit=False)
-        self.object.project = self.project
-        self.object.save()
-
-        return redirect(self.get_success_url())
+    def get_initial(self):
+        return {'project': self.project.id}
 
     def get_success_url(self):
         return reverse('wiki:detail', args=(self.project.slug, self.object.slug))

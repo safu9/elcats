@@ -31,7 +31,14 @@
       <p class="has-text-danger">{{ error }}</p>
     {% endfor %}
 
-    {% for field in form %}
+    {% for field in form.hidden_fields %}
+      {{ field }}
+      {% for error in field.errors %}
+        <p class="has-text-danger">{{ error }}</p>
+      {% endfor %}
+    {% endfor %}
+
+    {% for field in form.visible_fields %}
       <div class="field">
         <label class="label">{{ field.label }}</label>
         <div class="control">
