@@ -18,29 +18,33 @@ class IndexView(ProjectMixin, generic.ListView):
     paginate_by = 20
 
 
-def get_date_schedule_dict(dates):
-    """ ソート済みのdatetime型リストをキーとしたスケジュールリストの辞書を返す """
-    data = { d: [] for d in dates }
-    schedules = Schedule.objects.filter(date__range=(dates[0], dates[-1])).order_by('date', 'time_from').iterator()
-    schedule = next(schedules, None)
+class BaseCalendarView(ProjectMixin, generic.ListView):
+    model = Schedule
+    ordering = ('date', 'time_from')
 
-    for day, list in data.items():
-        if not schedule:
-            break
-        if day < schedule.date:
-            continue
-        while schedule and day == schedule.date:
-            list.append(schedule)
-            schedule = next(schedules, None)
-    return data
+    def get_date_schedule_dict(self, dates):
+        """ ソート済みのdatetime型リストをキーとしたリストの辞書を返す """
+        data = { d: [] for d in dates }
+        schedules = self.get_queryset().filter(date__range=(dates[0], dates[-1])).iterator()
+        schedule = next(schedules, None)
+
+        for day, list in data.items():
+            if not schedule:
+                break
+            if day < schedule.date:
+                continue
+            while schedule and day == schedule.date:
+                list.append(schedule)
+                schedule = next(schedules, None)
+        return data
 
 
-class WeekView(ProjectMixin, WeekCalendarMixin, generic.TemplateView):
+class WeekView(WeekCalendarMixin, BaseCalendarView):
     template_name = 'schedule/week.html'
 
     def get_week_calendar(self):
         data = super().get_week_calendar()
-        data['date_list'] = get_date_schedule_dict(data['days'])
+        data['date_list'] = self.get_date_schedule_dict(data['days'])
         return data
 
     def get_context_data(self, **kwargs):
@@ -49,12 +53,12 @@ class WeekView(ProjectMixin, WeekCalendarMixin, generic.TemplateView):
         return context
 
 
-class MonthView(ProjectMixin, MonthCalendarMixin, generic.TemplateView):
+class MonthView(MonthCalendarMixin, BaseCalendarView):
     template_name = 'schedule/month.html'
 
     def get_month_calendar(self):
         data = super().get_month_calendar()
-        data['date_list'] = get_date_schedule_dict(data['days'])
+        data['date_list'] = self.get_date_schedule_dict(data['days'])
         return data
 
     def get_context_data(self, **kwargs):
