@@ -3,9 +3,12 @@ from django.db import models
 
 from recurrence.fields import RecurrenceField
 
+from home.models import Project
+
 
 class Schedule(models.Model):
 
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name='プロジェクト')
     name = models.CharField('名前', max_length=50)
     description = models.TextField('説明', blank=True)
     place = models.CharField('場所', max_length=50, blank=True)

@@ -13,7 +13,8 @@
   <nav class="breadcrumb is-small" aria-label="breadcrumbs">
     <ul>
       <li><a href="{% url 'home:index' %}">トップ</a></li>
-      <li><a href="{% url 'schedule:index' %}">予定</a></li>
+      <li><a href="{% url 'home:project_detail' project.slug %}">{{ project.name }}</a></li>
+      <li><a href="{% url 'schedule:index' project.slug %}">予定</a></li>
       <li class="is-active"><a href="#">詳細</a></li>
     </ul>
   </nav>
@@ -42,8 +43,8 @@
         </button>
 
         {% if object.author == user %}
-          <a href="{% url 'schedule:update' object.pk %}" class="button is-light">編集</a>
-          <a href="{% url 'schedule:delete' object.pk %}" class="button is-light">削除</a>
+          <a href="{% url 'schedule:update' project.slug object.pk %}" class="button is-light">編集</a>
+          <a href="{% url 'schedule:delete' project.slug object.pk %}" class="button is-light">削除</a>
         {% endif %}
       </p>
     </div>

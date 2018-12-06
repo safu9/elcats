@@ -12,7 +12,8 @@
   <nav class="breadcrumb is-small" aria-label="breadcrumbs">
     <ul>
       <li><a href="{% url 'home:index' %}">トップ</a></li>
-      <li><a href="{% url 'schedule:index' %}">予定</a></li>
+      <li><a href="{% url 'home:project_detail' project.slug %}">{{ project.name }}</a></li>
+      <li><a href="{% url 'schedule:index' project.slug %}">予定</a></li>
       <li class="is-active"><a href="#">月間</a></li>
     </ul>
   </nav>
@@ -23,8 +24,8 @@
 
   <div class="columns">
     <div class="column is-clearfix has-text-centered">
-      <a class="is-pulled-left" href="{% url 'schedule:month' calendar.previous.year calendar.previous.month  %}">前月</a>
-      <a class="is-pulled-right" href="{% url 'schedule:month' calendar.next.year calendar.next.month %}">次月</a>
+      <a class="is-pulled-left" href="{% url 'schedule:month' project.slug calendar.previous.year calendar.previous.month  %}">前月</a>
+      <a class="is-pulled-right" href="{% url 'schedule:month' project.slug calendar.next.year calendar.next.month %}">次月</a>
       <span>{{ calendar.current | date:"Y年n月" }}</span>
     </div>
   </div>
@@ -49,7 +50,7 @@
         </div>
 
         {% for schedule in schedules %}
-          <a href="{% url 'schedule:detail' schedule.pk %}" class="schedule-link">
+          <a href="{% url 'schedule:detail' project.slug schedule.pk %}" class="schedule-link">
             <div>
               {% if schedule.time_from %}
                 <div>

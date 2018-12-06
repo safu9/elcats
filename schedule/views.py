@@ -1,17 +1,17 @@
 import datetime
 
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import redirect
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse
 from django.views import generic
 from django.views.generic.edit import FormMixin
 
+from home.mixins import ProjectMixin
 from .forms import ScheduleForm, ScheduleCommentForm
 from .mixins import MonthCalendarMixin, WeekCalendarMixin
 from .models import Schedule
 
 
-class IndexView(LoginRequiredMixin, generic.ListView):
+class IndexView(ProjectMixin, generic.ListView):
     template_name = 'schedule/index.html'
     model = Schedule
     ordering = ('date', 'time_from')
@@ -35,7 +35,7 @@ def get_date_schedule_dict(dates):
     return data
 
 
-class WeekView(WeekCalendarMixin, generic.TemplateView):
+class WeekView(ProjectMixin, WeekCalendarMixin, generic.TemplateView):
     template_name = 'schedule/week.html'
 
     def get_week_calendar(self):
@@ -49,7 +49,7 @@ class WeekView(WeekCalendarMixin, generic.TemplateView):
         return context
 
 
-class MonthView(MonthCalendarMixin, generic.TemplateView):
+class MonthView(ProjectMixin, MonthCalendarMixin, generic.TemplateView):
     template_name = 'schedule/month.html'
 
     def get_month_calendar(self):
@@ -63,12 +63,13 @@ class MonthView(MonthCalendarMixin, generic.TemplateView):
         return context
 
 
-class CreateView(LoginRequiredMixin, generic.CreateView):
+class CreateView(ProjectMixin, generic.CreateView):
     template_name = 'schedule/create.html'
     form_class = ScheduleForm
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
+        self.object.project = self.project
         self.object.author = self.request.user
         self.object.save()
         form.save_m2m()
@@ -76,10 +77,10 @@ class CreateView(LoginRequiredMixin, generic.CreateView):
         return redirect(self.get_success_url())
 
     def get_success_url(self):
-        return reverse('schedule:detail', args=(self.object.pk,))
+        return reverse('schedule:detail', args=(self.project.slug, self.object.pk,))
 
 
-class DetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
+class DetailView(ProjectMixin, FormMixin, generic.DetailView):
     template_name = 'schedule/detail.html'
     model = Schedule
     form_class = ScheduleCommentForm
@@ -100,16 +101,16 @@ class DetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse('schedule:detail', args=(self.object.pk,))
+        return reverse('schedule:detail', args=(self.project.slug, self.object.pk,))
 
 
-class UpdateView(UserPassesTestMixin, generic.UpdateView):
+class UpdateView(ProjectMixin, generic.UpdateView):
     template_name = 'schedule/update.html'
     model = Schedule
     form_class = ScheduleForm
 
     def test_func(self):
-        if not self.request.user.is_authenticated:
+        if not super().test_func():
             return False
 
         self.object = self.get_object()
@@ -119,16 +120,15 @@ class UpdateView(UserPassesTestMixin, generic.UpdateView):
         return True
 
     def get_success_url(self):
-        return reverse('schedule:detail', args=(self.object.pk,))
+        return reverse('schedule:detail', args=(self.project.slug, self.object.pk,))
 
 
-class DeleteView(UserPassesTestMixin, generic.DeleteView):
+class DeleteView(ProjectMixin, generic.DeleteView):
     template_name = 'schedule/delete.html'
     model = Schedule
-    success_url = reverse_lazy('schedule:index')
 
     def test_func(self):
-        if not self.request.user.is_authenticated:
+        if not super().test_func():
             return False
 
         self.object = self.get_object()
@@ -136,3 +136,6 @@ class DeleteView(UserPassesTestMixin, generic.DeleteView):
             self.raise_exception = True
             return False
         return True
+
+    def get_success_url(self):
+        return reverse('schedule:index', args=(self.project.slug,))
