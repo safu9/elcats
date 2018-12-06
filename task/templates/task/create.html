@@ -8,7 +8,8 @@
   <nav class="breadcrumb is-small" aria-label="breadcrumbs">
     <ul>
       <li><a href="{% url 'home:index' %}">トップ</a></li>
-      <li><a href="{% url 'task:index' %}">タスク</a></li>
+      <li><a href="{% url 'home:project_detail' project.slug %}">{{ project.name }}</a></li>
+      <li><a href="{% url 'task:index' project.slug %}">タスク</a></li>
       <li class="is-active"><a href="#">作成</a></li>
     </ul>
   </nav>

@@ -4,7 +4,9 @@
   <aside class="menu">
     <ul class="menu-list">
       <li><a href="{% url 'home:index' %}">ホーム</a></li>
-      <li><a href="{% url 'task:index' %}">タスク</a></li>
+      {% if project %}
+        <li><a href="{% url 'task:index' project.slug %}">タスク</a></li>
+      {% endif %}
       <li><a href="{% url 'schedule:index' %}">予定</a></li>
       <li><a href="{% url 'chat:index' %}">チャット</a></li>
       <li><a href="{% url 'wiki:index' %}">Wiki</a></li>

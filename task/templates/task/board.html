@@ -13,7 +13,8 @@
   <nav class="breadcrumb is-small" aria-label="breadcrumbs">
     <ul>
       <li><a href="{% url 'home:index' %}">トップ</a></li>
-      <li><a href="{% url 'task:index' %}">タスク</a></li>
+      <li><a href="{% url 'home:project_detail' project.slug %}">{{ project.name }}</a></li>
+      <li><a href="{% url 'task:index' project.slug %}">タスク</a></li>
       <li class="is-active"><a href="#">ボード</a></li>
     </ul>
   </nav>
@@ -28,7 +29,7 @@
         </p>
         <div class="task-board" id="task-board{{ forloop.counter0 }}">
           {% for task in tasks %}
-            <a href="{% url 'task:detail' task.pk %}" class="task-item is-clearfix" id="task-item{{ task.pk }}">
+            <a href="{% url 'task:detail' project.slug task.pk %}" class="task-item is-clearfix" id="task-item{{ task.pk }}">
               <div>
                 <div class="task-name">
                   {{ task.name }}

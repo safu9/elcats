@@ -1,17 +1,17 @@
 import datetime
 
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db.models import Max, Min
 from django.shortcuts import redirect
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse
 from django.views import generic
 from django.views.generic.edit import FormMixin
 
+from home.mixins import ProjectMixin
 from .forms import TaskForm, TaskCommentForm
 from .models import Task
 
 
-class IndexView(LoginRequiredMixin, generic.ListView):
+class IndexView(ProjectMixin, generic.ListView):
     template_name = 'task/index.html'
     model = Task
     paginate_by = 20
@@ -31,20 +31,22 @@ class IndexView(LoginRequiredMixin, generic.ListView):
         return context
 
 
-class BoardView(LoginRequiredMixin, generic.TemplateView):
+class BoardView(ProjectMixin, generic.ListView):
     template_name = 'task/board.html'
+    model = Task
 
     def get_context_data(self, **kwargs):
+        queryset = self.get_queryset()
         task_list = []
         for i, name in Task.STATES:
-            task_list.append((name, Task.objects.filter(state=i)))
+            task_list.append((name, queryset.filter(state=i)))
 
         context = super().get_context_data(**kwargs)
         context['task_list'] = task_list
         return context
 
 
-class GanttView(LoginRequiredMixin, generic.ListView):
+class GanttView(ProjectMixin, generic.ListView):
     template_name = 'task/gantt.html'
     model = Task
     paginate_by = 20
@@ -95,12 +97,13 @@ class GanttView(LoginRequiredMixin, generic.ListView):
         return context
 
 
-class CreateView(LoginRequiredMixin, generic.CreateView):
+class CreateView(ProjectMixin, generic.CreateView):
     template_name = 'task/create.html'
     form_class = TaskForm
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
+        self.object.project = self.project
         self.object.author = self.request.user
         self.object.save()
         form.save_m2m()
@@ -108,10 +111,10 @@ class CreateView(LoginRequiredMixin, generic.CreateView):
         return redirect(self.get_success_url())
 
     def get_success_url(self):
-        return reverse('task:detail', args=(self.object.pk,))
+        return reverse('task:detail', args=(self.project.slug, self.object.pk,))
 
 
-class DetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
+class DetailView(ProjectMixin, FormMixin, generic.DetailView):
     template_name = 'task/detail.html'
     model = Task
     form_class = TaskCommentForm
@@ -132,25 +135,24 @@ class DetailView(LoginRequiredMixin, FormMixin, generic.DetailView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse('task:detail', args=(self.object.pk,))
+        return reverse('task:detail', args=(self.project.slug, self.object.pk,))
 
 
-class UpdateView(LoginRequiredMixin, generic.UpdateView):
+class UpdateView(ProjectMixin, generic.UpdateView):
     template_name = 'task/update.html'
     model = Task
     form_class = TaskForm
 
     def get_success_url(self):
-        return reverse('task:detail', args=(self.object.pk,))
+        return reverse('task:detail', args=(self.project.slug, self.object.pk,))
 
 
-class DeleteView(UserPassesTestMixin, generic.DeleteView):
+class DeleteView(ProjectMixin, generic.DeleteView):
     template_name = 'task/delete.html'
     model = Task
-    success_url = reverse_lazy('task:index')
 
     def test_func(self):
-        if not self.request.user.is_authenticated:
+        if not super().test_func():
             return False
 
         self.object = self.get_object()
@@ -158,3 +160,6 @@ class DeleteView(UserPassesTestMixin, generic.DeleteView):
             self.raise_exception = True
             return False
         return True
+
+    def get_success_url(self):
+        return reverse('task:index', args=(self.project.slug,))

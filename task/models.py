@@ -1,6 +1,8 @@
 from django.conf import settings
 from django.db import models
 
+from home.models import Project
+
 
 class Task(models.Model):
 
@@ -14,6 +16,7 @@ class Task(models.Model):
         (DONE, '完了'),
     )
 
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name='プロジェクト')
     name = models.CharField('名前', max_length=50)
     description = models.TextField('説明', blank=True)
     date_from = models.DateField('開始日', blank=True, null=True)

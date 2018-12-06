@@ -13,6 +13,7 @@
   <nav class="breadcrumb is-small" aria-label="breadcrumbs">
     <ul>
       <li><a href="{% url 'home:index' %}">トップ</a></li>
+      <li><a href="{% url 'home:project_detail' project.slug %}">{{ project.name }}</a></li>
       <li class="is-active"><a href="#">タスク</a></li>
     </ul>
   </nav>
@@ -31,7 +32,7 @@
   </div>
 
   {% for task in object_list %}
-    <a href="{% url 'task:detail' task.pk %}" class="task-item is-clearfix">
+    <a href="{% url 'task:detail' project.slug task.pk %}" class="task-item is-clearfix">
       <div>
         <div class="task-name">
           {{ task.name }}
@@ -59,8 +60,8 @@
   <hr>
 
   <p>
-    <a href="{% url 'task:create' %}">タスクを作成する</a> /
-    <a href="{% url 'task:gantt' %}">ガントチャート</a> /
-    <a href="{% url 'task:board' %}">ボード</a>
+    <a href="{% url 'task:create' project.slug %}">タスクを作成する</a> /
+    <a href="{% url 'task:gantt' project.slug %}">ガントチャート</a> /
+    <a href="{% url 'task:board' project.slug %}">ボード</a>
   </p>
 {% endblock %}

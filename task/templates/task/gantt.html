@@ -13,7 +13,8 @@
   <nav class="breadcrumb is-small" aria-label="breadcrumbs">
     <ul>
       <li><a href="{% url 'home:index' %}">トップ</a></li>
-      <li><a href="{% url 'task:index' %}">タスク</a></li>
+      <li><a href="{% url 'home:project_detail' project.slug %}">{{ project.name }}</a></li>
+      <li><a href="{% url 'task:index' project.slug %}">タスク</a></li>
       <li class="is-active"><a href="#">ガントチャート</a></li>
     </ul>
   </nav>
@@ -34,7 +35,7 @@
       <div class="task-gantt-row">タスク</div>
       {% for task in object_list %}
         <div class="task-gantt-row">
-          <a href="{% url 'task:detail' task.pk %}">
+          <a href="{% url 'task:detail' project.slug task.pk %}">
             #{{ task.pk }} : {{ task.name }}
           </a>
         </div>
@@ -79,7 +80,7 @@
   <hr>
 
   <p>
-    <a href="{% url 'task:create' %}">タスクを作成する</a>
+    <a href="{% url 'task:create' project.slug %}">タスクを作成する</a>
   </p>
 
   {% if is_paginated %}
