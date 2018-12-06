@@ -9,7 +9,7 @@
     <ul>
       <li><a href="{% url 'home:index' %}">トップ</a></li>
       <li><a href="{% url 'home:project_list' %}">プロジェクト</a></li>
-      <li><a href="{% url 'home:project_detail' object.slug %}">詳細</a></li>
+      <li><a href="{% url 'home:project_detail' project.slug %}">詳細</a></li>
       <li class="is-active"><a href="#">編集</a></li>
     </ul>
   </nav>

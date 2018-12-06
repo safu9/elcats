@@ -13,20 +13,20 @@
     </ul>
   </nav>
 
-  <h2 class="title">{{ object.name }}</h2>
+  <h2 class="title">{{ project.name }}</h2>
 
   <hr>
 
   <p>
-    {% if object.description %}
-    	{{ object.description }}
+    {% if project.description %}
+    	{{ project.description }}
     {% else %}
     	<p>このプロジェクトの説明はありません。</p>
     {% endif %}
 
     <p>
-      <a href="{% url 'home:project_update' object.slug %}" class="button is-light">編集</a>
-      <a href="{% url 'home:project_delete' object.slug %}" class="button is-light">削除</a>
+      <a href="{% url 'home:project_update' project.slug %}" class="button is-light">編集</a>
+      <a href="{% url 'home:project_delete' project.slug %}" class="button is-light">削除</a>
     </p>
   </p>
 
