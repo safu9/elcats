@@ -9,11 +9,11 @@
     <ul>
       <li><a href="{% url 'home:index' %}">トップ</a></li>
       <li><a href="{% url 'home:project_detail' project.slug %}">{{ project.name }}</a></li>
-      <li class="is-active"><a href="#">編集</a></li>
+      <li class="is-active"><a href="#">設定</a></li>
     </ul>
   </nav>
 
-  <h2 class="title">プロジェクト編集</h2>
+  <h2 class="title">プロジェクト設定</h2>
 
   <hr>
 
@@ -40,10 +40,14 @@
       </div>
     {% endfor %}
 
-    <div class="field">
-      <div class="control">
+    <div class="field is-grouped">
+      <div class="control is-expanded">
         <input class="button is-primary" type="submit" value="更新">
+      </div>
+      <div class="control">
+        <a href="{% url 'home:project_delete' project.slug %}" class="button is-danger">削除</a>
       </div>
     </div>
   </form>
+
 {% endblock %}

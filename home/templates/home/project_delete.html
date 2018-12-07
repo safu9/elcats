@@ -16,7 +16,10 @@
 
   <hr>
 
-  <p>プロジェクト「{{ project.name }}」を削除していいですか？</p>
+  <p>
+    プロジェクト「{{ project.name }}」を削除していいですか？<br>
+    この操作は元に戻せません。
+  </p>
 
   <form method="post">
     {% csrf_token %}
