@@ -9,6 +9,8 @@ class TaskForm(forms.ModelForm):
         model = Task
         exclude = ('project', 'author',)
         widgets = {
+            'scheduled_date_from': forms.DateInput(attrs={"type": "date"}),
+            'scheduled_date_to': forms.DateInput(attrs={"type": "date"}),
             'date_from': forms.DateInput(attrs={"type": "date"}),
             'date_to': forms.DateInput(attrs={"type": "date"}),
             'assignees': forms.CheckboxSelectMultiple,

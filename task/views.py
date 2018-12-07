@@ -69,14 +69,28 @@ class GanttView(ProjectMixin, generic.ListView):
     @staticmethod
     def get_charts(tasks, min_date):
         for task in tasks:
+            chart = dict()
+            if task.date_from:
+                chart['start'] = (task.date_from - min_date).days
+            elif task.date_to:
+                chart['start'] = (task.date_to - min_date).days
+
             if task.date_from and task.date_to:
-                yield {'start': (task.date_from - min_date).days, 'length': (task.date_to - task.date_from).days}
-            elif task.date_from and not task.date_to:
-                yield {'start': (task.date_from - min_date).days, 'length': 1}
-            elif not task.date_from and task.date_to:
-                yield {'start': (task.date_to - min_date).days, 'length': 1}
-            else:
-                yield None
+                chart['length'] = (task.date_to - task.date_from).days
+            elif task.date_from or task.date_to:
+                chart['length'] = 1
+
+            if task.scheduled_date_from:
+                chart['scheduled_start'] = (task.scheduled_date_from - min_date).days
+            elif task.scheduled_date_to:
+                chart['scheduled_start'] = (task.scheduled_date_to - min_date).days
+
+            if task.scheduled_date_from and task.scheduled_date_to:
+                chart['scheduled_length'] = (task.scheduled_date_to - task.scheduled_date_from).days
+            elif task.scheduled_date_from or task.scheduled_date_to:
+                chart['scheduled_length'] = 1
+
+            yield chart
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

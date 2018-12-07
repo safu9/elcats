@@ -5,11 +5,21 @@
 }
 .task-state-1 {
   background-color: #23d160 !important;
-  color: #fff  !important;;
+  color: #fff  !important;
 }
 .task-state-2 {
   background-color: #d0d0d0 !important;
 }
+.task-state-0-dark {
+  background-color: #e5c550 !important;
+}
+.task-state-1-dark {
+  background-color: #1daf51 !important;
+}
+.task-state-2-dark {
+  background-color: #c4c4c4 !important;
+}
+
 
 .task-item {
 	display: block;
@@ -162,8 +172,13 @@
   background: #f5f5f5;
 }
 
-.task-gantt-bar {
+.task-gantt-subbar {
   position: absolute;
   top: .2rem;
-  height: 1.5rem;
+  height: .75rem;
+}
+.task-gantt-bar {
+  position: absolute;
+  top: .95rem;
+  height: .75rem;
 }

@@ -19,6 +19,8 @@ class Task(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name='プロジェクト')
     name = models.CharField('名前', max_length=50)
     description = models.TextField('説明', blank=True)
+    scheduled_date_from = models.DateField('予定開始日', blank=True, null=True)
+    scheduled_date_to = models.DateField('予定終了日', blank=True, null=True)
     date_from = models.DateField('開始日', blank=True, null=True)
     date_to = models.DateField('終了日', blank=True, null=True)
     state = models.IntegerField('状態', choices=STATES, default=TODO, blank=False)
