@@ -40,5 +40,9 @@ var simplemde = new SimpleMDE({
     'image', '|',
     'preview', 'side-by-side', 'fullscreen', 'guide',
   ],
+  previewRender: function(plainText, preview) {
+		preview.classList.add('content');
+		return simplemde.markdown(plainText);
+	},
   spellChecker: false,
 });

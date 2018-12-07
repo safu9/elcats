@@ -3,3 +3,10 @@
 blockquote p {
   margin-bottom: 0;
 }
+
+.CodeMirror .CodeMirror-scroll {
+	max-height: 70vh;
+}
+.CodeMirror-fullscreen .CodeMirror-scroll {
+  max-height: none;
+}
