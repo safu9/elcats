@@ -19,7 +19,7 @@
     </ul>
   </nav>
 
-  <h2 class="title">#{{ object.pk }} : {{ object.name }}</h2>
+  <h2 class="title">#{{ object.number }} : {{ object.name }}</h2>
 
   <hr>
 
@@ -34,9 +34,9 @@
       <p>作成者 : {{ object.author.username }}</p>
 
       <p>
-        <a href="{% url 'task:update' project.slug object.pk %}" class="button is-light">編集</a>
+        <a href="{% url 'task:update' project.slug object.number %}" class="button is-light">編集</a>
         {% if object.author == user %}
-          <a href="{% url 'task:delete' project.slug object.pk %}" class="button is-light">削除</a>
+          <a href="{% url 'task:delete' project.slug object.number %}" class="button is-light">削除</a>
         {% endif %}
       </p>
     </div>

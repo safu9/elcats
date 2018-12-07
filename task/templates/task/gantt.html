@@ -35,8 +35,8 @@
       <div class="task-gantt-row">タスク</div>
       {% for task in object_list %}
         <div class="task-gantt-row">
-          <a href="{% url 'task:detail' project.slug task.pk %}">
-            #{{ task.pk }} : {{ task.name }}
+          <a href="{% url 'task:detail' project.slug task.number %}">
+            #{{ task.number }} : {{ task.name }}
           </a>
         </div>
       {% endfor %}

@@ -8,7 +8,7 @@
       <li><a href="{% url 'home:index' %}">トップ</a></li>
       <li><a href="{% url 'home:project_detail' project.slug %}">{{ project.name }}</a></li>
       <li><a href="{% url 'task:index' project.slug %}">タスク</a></li>
-      <li><a href="{% url 'task:detail' project.slug object.pk %}">詳細</a></li>
+      <li><a href="{% url 'task:detail' project.slug object.number %}">詳細</a></li>
       <li class="is-active"><a href="#">削除</a></li>
     </ul>
   </nav>
@@ -18,7 +18,7 @@
 
   <hr>
 
-  <p>タスク「#{{ object.pk }} {{ object.name }}」を削除していいですか？</p>
+  <p>タスク「#{{ object.number }} {{ object.name }}」を削除していいですか？</p>
 
   <form method="post">
     {% csrf_token %}
@@ -28,7 +28,7 @@
         <input class="button is-danger" type="submit" value="削除">
       </div>
       <div class="control">
-        <a href="{% url 'task:detail' project.slug object.pk %}" class="button is-text">戻る</a>
+        <a href="{% url 'task:detail' project.slug object.number %}" class="button is-text">戻る</a>
       </div>
     </div>
   </form>

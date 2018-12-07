@@ -7,7 +7,7 @@ class TaskForm(forms.ModelForm):
 
     class Meta:
         model = Task
-        exclude = ('project', 'author',)
+        exclude = ('project', 'number', 'author',)
         widgets = {
             'scheduled_date_from': forms.DateInput(attrs={"type": "date"}),
             'scheduled_date_to': forms.DateInput(attrs={"type": "date"}),

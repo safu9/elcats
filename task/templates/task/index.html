@@ -32,7 +32,7 @@
   </div>
 
   {% for task in object_list %}
-    <a href="{% url 'task:detail' project.slug task.pk %}" class="task-item is-clearfix">
+    <a href="{% url 'task:detail' project.slug task.number %}" class="task-item is-clearfix">
       <div>
         <div class="task-name">
           {{ task.name }}
@@ -42,7 +42,7 @@
         {% if state != 'done' %}
           <span class="tag is-rounded task-state-tag task-state-{{ task.state }}">{{ task.get_state_display }}</span>
         {% endif %}
-        <span class="task-info">#{{ task.pk }} {{ task.author.username }}が作成</span>
+        <span class="task-info">#{{ task.number }} {{ task.author.username }}が作成</span>
       </div>
     </a>
   {% empty %}

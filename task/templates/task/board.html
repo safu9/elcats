@@ -29,14 +29,14 @@
         </p>
         <div class="task-board" id="task-board{{ forloop.counter0 }}">
           {% for task in tasks %}
-            <a href="{% url 'task:detail' project.slug task.pk %}" class="task-item is-clearfix" id="task-item{{ task.pk }}">
+            <a href="{% url 'task:detail' project.slug task.number %}" class="task-item is-clearfix" id="task-item{{ task.pk }}">
               <div>
                 <div class="task-name">
                   {{ task.name }}
                 </div>
               </div>
               <div>
-                <span class="task-info">#{{ task.pk }} {{ task.author.username }}が作成</span>
+                <span class="task-info">#{{ task.number }} {{ task.author.username }}が作成</span>
               </div>
             </a>
           {% endfor %}

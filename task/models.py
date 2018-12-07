@@ -17,6 +17,7 @@ class Task(models.Model):
     )
 
     project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name='プロジェクト')
+    number = models.PositiveIntegerField('番号')
     name = models.CharField('名前', max_length=50)
     description = models.TextField('説明', blank=True)
     scheduled_date_from = models.DateField('予定開始日', blank=True, null=True)
@@ -30,6 +31,8 @@ class Task(models.Model):
     class Meta:
         verbose_name = 'タスク'
         verbose_name_plural = 'タスク'
+
+        unique_together = ('project', 'number')
 
 
 class TaskComment(models.Model):

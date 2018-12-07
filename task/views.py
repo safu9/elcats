@@ -1,7 +1,7 @@
 import datetime
 
 from django.db.models import Max, Min
-from django.shortcuts import redirect
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views import generic
 from django.views.generic.edit import FormMixin
@@ -116,8 +116,13 @@ class CreateView(ProjectMixin, generic.CreateView):
     form_class = TaskForm
 
     def form_valid(self, form):
+        q = Task.objects.filter(project=self.project).aggregate(Max('number'))
+        if not q['number__max']:
+            q['number__max'] = 0
+
         self.object = form.save(commit=False)
         self.object.project = self.project
+        self.object.number = q['number__max'] + 1
         self.object.author = self.request.user
         self.object.save()
         form.save_m2m()
@@ -125,13 +130,18 @@ class CreateView(ProjectMixin, generic.CreateView):
         return redirect(self.get_success_url())
 
     def get_success_url(self):
-        return reverse('task:detail', args=(self.project.slug, self.object.pk,))
+        return reverse('task:detail', args=(self.project.slug, self.object.number,))
 
 
 class DetailView(ProjectMixin, FormMixin, generic.DetailView):
     template_name = 'task/detail.html'
     model = Task
     form_class = TaskCommentForm
+
+    def get_object(self, queryset=None):
+        if queryset is None:
+            queryset = self.get_queryset()
+        return get_object_or_404(queryset, number=self.kwargs.get('number'))
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -149,7 +159,7 @@ class DetailView(ProjectMixin, FormMixin, generic.DetailView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse('task:detail', args=(self.project.slug, self.object.pk,))
+        return reverse('task:detail', args=(self.project.slug, self.object.number,))
 
 
 class UpdateView(ProjectMixin, generic.UpdateView):
@@ -157,13 +167,23 @@ class UpdateView(ProjectMixin, generic.UpdateView):
     model = Task
     form_class = TaskForm
 
+    def get_object(self, queryset=None):
+        if queryset is None:
+            queryset = self.get_queryset()
+        return get_object_or_404(queryset, number=self.kwargs.get('number'))
+
     def get_success_url(self):
-        return reverse('task:detail', args=(self.project.slug, self.object.pk,))
+        return reverse('task:detail', args=(self.project.slug, self.object.number,))
 
 
 class DeleteView(ProjectMixin, generic.DeleteView):
     template_name = 'task/delete.html'
     model = Task
+
+    def get_object(self, queryset=None):
+        if queryset is None:
+            queryset = self.get_queryset()
+        return get_object_or_404(queryset, number=self.kwargs.get('number'))
 
     def test_func(self):
         if not super().test_func():
