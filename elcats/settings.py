@@ -46,7 +46,7 @@ INSTALLED_APPS = [
 
     'home.apps.HomeConfig',
     'account.apps.AccountConfig',
-    'chat.apps.ChatConfig',
+    # 'chat.apps.ChatConfig',
     'schedule.apps.ScheduleConfig',
     'task.apps.TaskConfig',
     'wiki.apps.WikiConfig',
