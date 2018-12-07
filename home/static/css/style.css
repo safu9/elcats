@@ -7,6 +7,10 @@ p {
   margin-bottom: 1em;
 }
 
+.input, .textarea {
+  box-shadow: none;
+}
+
 .columns {
   word-break: break-all;
 }

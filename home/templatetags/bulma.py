@@ -1,4 +1,5 @@
 from math import floor
+import re
 from urllib.parse import parse_qs, urlencode, urlparse, urlunparse
 
 from django import template
@@ -19,6 +20,7 @@ def bulma_form(value, autoescape=True):
     value = value.replace('input type="email" ', 'input type="email" class="input" ')
     value = value.replace('input type="password" ', 'input type="password" class="input" ')
     value = value.replace('textarea ', 'textarea class="textarea" ')
+    value = re.sub('<select(.*?)/select>', r'<div class="select"><select\1/select></div>', value, flags=re.DOTALL)
 
     return mark_safe(value)
 
