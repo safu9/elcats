@@ -17,5 +17,5 @@ urlpatterns = [
         path('<int:pk>/delete/', views.DeleteView.as_view(), name='delete'),
     ])),
 
-    path('api/participate/', apis.set_participant, name='participant_api'),
+    path('api/schedule/participate/', apis.set_participant, name='participant_api'),
 ]
