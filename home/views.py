@@ -12,12 +12,6 @@ class IndexView(LoginRequiredMixin, generic.ListView):
     model = Project
 
 
-class ProjectListView(LoginRequiredMixin, generic.ListView):
-    template_name = 'home/project_list.html'
-    model = Project
-    paginate_by = 20
-
-
 class ProjectCreateView(LoginRequiredMixin, generic.CreateView):
     template_name = 'home/project_create.html'
     form_class = ProjectForm

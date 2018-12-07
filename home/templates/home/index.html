@@ -1,26 +1,35 @@
-{% extends "base_sidemenu.html" %}
+{% extends "base.html" %}
+
+{% load bulma %}
 
 {% block title %}ホーム{% endblock %}
 
-{% block sidemenu %}
-  <aside class="menu">
-    <p class="menu-label">
-      プロジェクト一覧
-    </p>
-    <ul class="menu-list">
-      {% for project in object_list %}
-        <li><a href="{% url 'home:project_detail' project.slug %}">{{ project.name }}</a></li>
-      {% endfor %}
-      <li><a href="{% url 'home:project_create' %}">プロジェクトを作成する</a></li>
-    </ul>
-  </aside>
-{% endblock %}
-
 {% block content %}
-  <h2 class="title">
-    Hello World
-  </h2>
-  <p class="subtitle">
-    This is the first page of Elcats!
+  <h2 class="title">プロジェクト一覧</h2>
+
+  <hr>
+
+  {% for project in object_list %}
+    <a href="{% url 'home:project_detail' project.slug %}">
+      <div>
+        {{ project.name }}
+      </div>
+    </a>
+  {% empty %}
+    <p>
+      まだプロジェクトがありません。
+    </p>
+  {% endfor %}
+
+  {% if is_paginated %}
+    <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+      {% bulma_pagination page_obj %}
+    </nav>
+  {% endif %}
+
+  <hr>
+
+  <p>
+    <a href="{% url 'home:project_create' %}">プロジェクトを作成する</a>
   </p>
 {% endblock %}
