@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 from django.urls import reverse, reverse_lazy
 from django.views import generic
 
@@ -10,6 +11,21 @@ from .models import Project
 class IndexView(LoginRequiredMixin, generic.ListView):
     template_name = 'home/index.html'
     model = Project
+    paginate_by = 20
+
+    def get_queryset(self):
+        query = super().get_queryset()
+        self.type = self.request.GET.get('type', 'mine')
+        if self.type == 'mine':
+            return query.filter(members=self.request.user)
+        elif self.type == 'all':
+            return query.filter(Q(is_private=False) | Q(members=self.request.user)).distinct()
+        return query
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['type'] = self.type
+        return context
 
 
 class ProjectCreateView(LoginRequiredMixin, generic.CreateView):

@@ -10,7 +10,7 @@ class ProjectAccessMixin(UserPassesTestMixin):
             return False
 
         self.object = self.get_object()
-        if self.object.is_private and self.request.user not in self.object.members.all:
+        if self.object.is_private and self.request.user not in self.object.members.all():
             self.raise_exception = True
             return False
         return True

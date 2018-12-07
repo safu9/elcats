@@ -80,9 +80,12 @@ def bulma_pagination(page, pages_to_show=5, url=None, extra=None, parameter_name
     parts = urlparse(url or "")
     params = parse_qs(parts.query)
 
-    # append extra querystring parameters to the url.
+    # append extra query parameters to the url.
     if extra:
-        params.update(parse_qs(extra))
+        params.update(extra)
+
+    if params.get(parameter_name):
+        del params[parameter_name]
 
     # build url again.
     url = urlunparse(

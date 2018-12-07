@@ -53,7 +53,7 @@
 
   {% if is_paginated %}
     <nav class="pagination is-centered" role="navigation" aria-label="pagination">
-      {% bulma_pagination page_obj %}
+      {% bulma_pagination page_obj extra=request.GET %}
     </nav>
   {% endif %}
 

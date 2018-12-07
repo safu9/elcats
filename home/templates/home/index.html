@@ -7,7 +7,16 @@
 {% block content %}
   <h2 class="title">プロジェクト一覧</h2>
 
-  <hr>
+  <div class="tabs">
+    <ul>
+      <li class="{% if type == 'mine' %}is-active{% endif %}">
+        <a href="{% if type == 'mine' %}#{% else %}?type=mine{% endif %}">参加中</a>
+      </li>
+      <li class="{% if type == 'all' %}is-active{% endif %}">
+        <a href="{% if type == 'all' %}#{% else %}?type=all{% endif %}">すべて</a>
+      </li>
+    </ul>
+  </div>
 
   {% for project in object_list %}
     <a href="{% url 'home:project_detail' project.slug %}">
@@ -23,7 +32,7 @@
 
   {% if is_paginated %}
     <nav class="pagination is-centered" role="navigation" aria-label="pagination">
-      {% bulma_pagination page_obj %}
+      {% bulma_pagination page_obj extra=request.GET %}
     </nav>
   {% endif %}
 
