@@ -10,6 +10,9 @@ p {
 .input, .textarea {
   box-shadow: none;
 }
+.input[type="date"]::-webkit-inner-spin-button {
+  display: none;
+}
 
 .columns {
   word-break: break-all;
