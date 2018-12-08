@@ -176,9 +176,11 @@
   position: absolute;
   top: .2rem;
   height: .75rem;
+  border-right: 1px solid #eee;
 }
 .task-gantt-bar {
   position: absolute;
   top: .95rem;
   height: .75rem;
+  border-right: 1px solid #eee;
 }
