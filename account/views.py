@@ -45,10 +45,12 @@ class PasswordResetCompleteView(auth_views.PasswordResetCompleteView):
 
 class UserView(LoginRequiredMixin, generic.ListView):
     template_name = 'account/user.html'
+    model = get_user_model()
+    ordering = ('pk')
     paginate_by = 20
 
     def get_queryset(self):
-        return get_user_model().objects.exclude(pk=self.request.user.pk).all()
+        return super().get_queryset().exclude(pk=self.request.user.pk)
 
 
 class UserDetailView(LoginRequiredMixin, generic.DetailView):

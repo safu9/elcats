@@ -12,6 +12,7 @@ from .models import Page
 class IndexView(ProjectMixin, generic.ListView):
     template_name = 'wiki/index.html'
     model = Page
+    ordering = ('pk')
     paginate_by = 20
 
 

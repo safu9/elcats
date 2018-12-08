@@ -14,6 +14,7 @@ from .models import Task
 class IndexView(ProjectMixin, generic.ListView):
     template_name = 'task/index.html'
     model = Task
+    ordering = ('-pk')
     paginate_by = 20
 
     def get_queryset(self):
@@ -34,6 +35,7 @@ class IndexView(ProjectMixin, generic.ListView):
 class BoardView(ProjectMixin, generic.ListView):
     template_name = 'task/board.html'
     model = Task
+    ordering = ('-pk')
 
     def get_context_data(self, **kwargs):
         queryset = self.get_queryset()
@@ -49,6 +51,7 @@ class BoardView(ProjectMixin, generic.ListView):
 class GanttView(ProjectMixin, generic.ListView):
     template_name = 'task/gantt.html'
     model = Task
+    ordering = ('pk')
     paginate_by = 20
 
     @staticmethod

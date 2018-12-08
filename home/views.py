@@ -11,6 +11,7 @@ from .models import Project
 class IndexView(LoginRequiredMixin, generic.ListView):
     template_name = 'home/index.html'
     model = Project
+    ordering = ('pk')
     paginate_by = 20
 
     def get_queryset(self):
