@@ -24,7 +24,7 @@
   </div>
 
   <p>
-    <a href="{% url 'chat:new_channel' object.pk %}">チャット</a>
+    {% comment %}<a href="{% url 'chat:new_channel' object.pk %}">チャット</a>{% endcomment %}
     {% if user == object %}
       <a href="{% url 'account:password_change' %}">パスワード変更</a>
     {% endif %}
