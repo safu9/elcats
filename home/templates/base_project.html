@@ -1,32 +1,68 @@
 {% extends "base_sidemenu.html" %}
 
 {% block sidemenu %}
+{% with namespace=request.resolver_match.namespace %}
   <aside class="menu">
     <ul class="menu-list">
-      <li><a href="{% url 'home:project_detail' project.slug %}">
-        <i class="fa fa-flag" aria-hidden="true"></i> ホーム
-      </a></li>
-      <li><a href="{% url 'task:index' project.slug %}">
-        <i class="fa fa-tasks" aria-hidden="true"></i> タスク
-      </a></li>
-      <li><a href="{% url 'schedule:index' project.slug %}">
-        <i class="fa fa-calendar" aria-hidden="true"></i> 予定
-      </a></li>
-      <li><a href="{% url 'wiki:index' project.slug %}">
-        <i class="fa fa-book" aria-hidden="true"></i> Wiki
-      </a></li>
-      {% comment %}<li><a href="{% url 'chat:index' %}">
-        <i class="fa fa-comment-o" aria-hidden="true"></i> チャット
-      </a></li>{% endcomment %}
-      <li><a href="#" class="has-text-grey-light">
-        <i class="fa fa-folder-open-o" aria-hidden="true"></i> ファイル
-      </a></li>
-      <li><a href="#" class="has-text-grey-light">
-        <i class="fa fa-code-fork" aria-hidden="true"></i> コード
-      </a></li>
-      <li><a href="{% url 'home:project_setting' project.slug %}">
-        <i class="fa fa-cog" aria-hidden="true"></i> 設定
-      </a></li>
+      <li>
+        <a href="{% url 'home:project_detail' project.slug %}">
+          <i class="fa fa-flag" aria-hidden="true"></i> ホーム
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'task:index' project.slug %}">
+          <i class="fa fa-tasks" aria-hidden="true"></i> タスク
+        </a>
+        <ul {% if namespace == 'task' %}class="is-active"{% endif %}>
+          <li><a href="{% url 'task:index' project.slug %}">一覧</a></li>
+          <li><a href="{% url 'task:create' project.slug %}">追加</a></li>
+          <li><a href="{% url 'task:board' project.slug %}">ボード</a></li>
+          <li><a href="{% url 'task:gantt' project.slug %}">ガントチャート</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="{% url 'schedule:index' project.slug %}">
+          <i class="fa fa-calendar" aria-hidden="true"></i> 予定
+        </a>
+        <ul {% if namespace == 'schedule' %}class="is-active"{% endif %}>
+          <li><a href="{% url 'schedule:index' project.slug %}">一覧</a></li>
+          <li><a href="{% url 'schedule:create' project.slug %}">追加</a></li>
+          <li><a href="{% url 'schedule:month' project.slug %}">月間</a></li>
+          <li><a href="{% url 'schedule:week' project.slug %}">週間</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="{% url 'wiki:index' project.slug %}">
+          <i class="fa fa-book" aria-hidden="true"></i> Wiki
+        </a>
+        <ul {% if namespace == 'wiki' %}class="is-active"{% endif %}>
+          <li><a href="{% url 'wiki:index' project.slug %}">一覧</a></li>
+          <li><a href="{% url 'wiki:create' project.slug %}">追加</a></li>
+        </ul>
+      </li>
+      {% comment %}
+        <li>
+          <a href="{% url 'chat:index' %}">
+            <i class="fa fa-comment-o" aria-hidden="true"></i> チャット
+          </a>
+        </li>
+      {% endcomment %}
+      <li>
+        <a href="#" class="has-text-grey-light">
+          <i class="fa fa-folder-open-o" aria-hidden="true"></i> ファイル
+        </a>
+      </li>
+      <li>
+        <a href="#" class="has-text-grey-light">
+          <i class="fa fa-code-fork" aria-hidden="true"></i> コード
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'home:project_setting' project.slug %}">
+          <i class="fa fa-cog" aria-hidden="true"></i> 設定
+        </a>
+      </li>
     </ul>
   </aside>
+{% endwith %}
 {% endblock %}
