@@ -24,7 +24,7 @@
   <hr>
 
   <article class="content">
-    {{ object.content|markdown2html|safe }}
+    {{ object.content|escape|markdown2html|safe }}
   </article>
 
   <p>

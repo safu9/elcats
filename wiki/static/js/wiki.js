@@ -31,6 +31,19 @@ function drawWikiLink(editor) {
   replaceSelection(cm, stat.link, ['[[',']]'], '');
 }
 
+function renderPreview(plainText, preview) {
+  preview.classList.add('content');
+
+  plainText = plainText
+    .replace(/&/g, '&amp;')
+    .replace(/>/g, '&gt;')
+    .replace(/</g, '&lt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;')
+    .replace(/`/g, '&#x60;');
+  return simplemde.markdown(plainText);
+}
+
 var simplemde = new SimpleMDE({
   autoDownloadFontAwesome: false,
   toolbar: [
@@ -41,9 +54,6 @@ var simplemde = new SimpleMDE({
     'image', '|',
     'preview', 'side-by-side', 'fullscreen', 'guide',
   ],
-  previewRender: function(plainText, preview) {
-		preview.classList.add('content');
-		return simplemde.markdown(plainText);
-	},
+  previewRender: renderPreview,
   spellChecker: false,
 });
