@@ -30,9 +30,9 @@
     </div>
   </div>
 
-  <div class="columns schedule-days is-mobile">
+  <div class="columns schedule-cal-days is-mobile">
     {% for day in calendar.days|slice:":7" %}
-      <div class="column schedule-cell">
+      <div class="column schedule-cal-cell">
         {{ day | date:"D" }}
       </div>
     {% endfor %}
@@ -40,8 +40,8 @@
 
   <div class="columns is-multiline is-mobile">
     {% for date, schedules in calendar.date_list.items %}
-      <div class="column schedule-cell">
-        <div class="schedule-date{% if calendar.now == date %} is-today{% endif %}{% if date.weekday == 6 %} is-sunday{% endif %}">
+      <div class="column schedule-cal-cell">
+        <div class="schedule-cal-date{% if calendar.now == date %} is-today{% endif %}{% if date.weekday == 6 %} is-sunday{% endif %}">
           {% if calendar.current.month == date.month %}
             {{ date | date:"j" }}
           {% else %}
@@ -50,7 +50,7 @@
         </div>
 
         {% for schedule in schedules %}
-          <a href="{% url 'schedule:detail' project.slug schedule.pk %}" class="schedule-link">
+          <a href="{% url 'schedule:detail' project.slug schedule.pk %}" class="schedule-cal-link">
             <div>
               {% if schedule.time_from %}
                 <div>
@@ -58,7 +58,7 @@
                   {% if schedule.time_to %} ～ {{ schedule.time_to|time:"H:i" }}{% endif %}
                 </div>
               {% endif %}
-              <div class="schedule-name-truncate">{{ schedule.name }}</div>
+              <div class="schedule-cal-name-truncate">{{ schedule.name }}</div>
             </div>
           </a>
         {% endfor %}

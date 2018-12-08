@@ -1,5 +1,20 @@
 /* schedule.css */
 
+.schedule-item {
+  display: block;
+  margin-bottom: .5rem;
+}
+.schedule-name {
+	font-weight: bold;
+}
+.schedule-date {
+  font-size: .9em;
+  color: gray;
+}
+.schedule-time {
+  font-size: .9em;
+}
+
 .schedule-detail-info {
   font-size: .9rem;
 }
@@ -38,7 +53,7 @@
 
 /* Calendar */
 
-.schedule-cell {
+.schedule-cal-cell {
   flex: none;
   width: 14.2857%;
   font-size: .9rem;
@@ -46,55 +61,55 @@
 }
 
 @media screen and (max-width: 768px) {
-  .schedule-cell {
+  .schedule-cal-cell {
     padding: .25rem;
     font-size: .8rem;
   }
 }
 @media screen and (max-width: 375px) {
-  .schedule-cell {
+  .schedule-cal-cell {
     padding: .15rem;
     font-size: .7rem;
   }
 }
 
-.schedule-days .schedule-cell {
+.schedule-cal-days .schedule-cal-cell {
   border-bottom-width: 0px;
   min-height: 0;
 }
 @media screen and (min-width: 769px) {
-  .schedule-days .schedule-cell {
+  .schedule-cal-days .schedule-cal-cell {
     padding: .25rem .75rem;
   }
 }
 
-.schedule-date {
+.schedule-cal-date {
   padding-bottom: .2rem;
   border-bottom: 1px solid #eee;
   margin-bottom: .2rem;
 }
-.schedule-date.is-sunday {
+.schedule-cal-date.is-sunday {
   border-bottom-color: #ff3860;
 }
-.schedule-date.is-today {
+.schedule-cal-date.is-today {
   border-bottom-color: #00d1b2;
 }
 
-.schedule-link {
+.schedule-cal-link {
   display: block;
   margin: 0 -0.2rem;
   padding: .2rem;
   transition: background-color .2s ease;
   color: #000;
 }
-.schedule-link:hover {
+.schedule-cal-link:hover {
   background-color: #f7f7f7;
 }
-.schedule-link + .schedule-link {
+.schedule-cal-link + .schedule-cal-link {
   border-top: 1px dotted #eee;
 }
 
-.schedule-name-truncate {
+.schedule-cal-name-truncate {
   overflow: hidden;
   line-height: 1.5;
   max-height: 4.5em;

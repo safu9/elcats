@@ -1,9 +1,13 @@
 {% extends "base_project.html" %}
 
-{% load humanize %}
+{% load humanize static %}
 {% load bulma %}
 
 {% block title %}予定{% endblock %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'css/schedule.css' %}" />
+{% endblock %}
 
 {% block content %}
   <nav class="breadcrumb is-small" aria-label="breadcrumbs">
@@ -20,19 +24,17 @@
 
   {% for schedule in object_list %}
     {% ifchanged %}
-      <div>{{ schedule.date|naturalday }}</div>
+      <div class="schedule-date">{{ schedule.date|naturalday }}</div>
     {% endifchanged %}
 
-    <a href="{% url 'schedule:detail' project.slug schedule.pk %}">
-      <div>
-        <div>
-          {% if schedule.time_from %}
-            {{ schedule.time_from|time:"H:i" }}
-            {% if schedule.time_to %} ～ {{ schedule.time_to|time:"H:i" }}{% endif %}
-          {% endif %}
-        </div>
-        <div>{{ schedule.author.username }} : {{ schedule.name }}</div>
+    <a href="{% url 'schedule:detail' project.slug schedule.pk %}" class="schedule-item">
+      <div class="schedule-time">
+        {% if schedule.time_from %}
+          {{ schedule.time_from|time:"H:i" }}
+          {% if schedule.time_to %} ～ {{ schedule.time_to|time:"H:i" }}{% endif %}
+        {% endif %}
       </div>
+      <div class="schedule-name">{{ schedule.name }}</div>
     </a>
   {% empty %}
     <p>
@@ -43,8 +45,8 @@
   <hr>
 
   <p>
-    <a href="{% url 'schedule:create' project.slug %}">予定を作成する</a>
-    <a href="{% url 'schedule:week' project.slug %}">週間表示</a>
+    <a href="{% url 'schedule:create' project.slug %}">予定を作成する</a> /
+    <a href="{% url 'schedule:week' project.slug %}">週間表示</a> /
     <a href="{% url 'schedule:month' project.slug %}">月間表示</a>
   </p>
 
