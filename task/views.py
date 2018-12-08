@@ -115,6 +115,11 @@ class CreateView(ProjectMixin, generic.CreateView):
     template_name = 'task/create.html'
     form_class = TaskForm
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['project'] = self.project
+        return kwargs
+
     def form_valid(self, form):
         q = Task.objects.filter(project=self.project).aggregate(Max('number'))
         if not q['number__max']:
@@ -166,6 +171,11 @@ class UpdateView(ProjectMixin, generic.UpdateView):
     template_name = 'task/update.html'
     model = Task
     form_class = TaskForm
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['project'] = self.project
+        return kwargs
 
     def get_object(self, queryset=None):
         if queryset is None:

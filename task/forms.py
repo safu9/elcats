@@ -5,6 +5,11 @@ from .models import Task, TaskComment
 
 class TaskForm(forms.ModelForm):
 
+    def __init__(self, project=None, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if project:
+            self.fields['assignees'].queryset = project.members.all()
+
     class Meta:
         model = Task
         exclude = ('project', 'number', 'author',)

@@ -5,6 +5,11 @@ from .models import Schedule, ScheduleComment
 
 class ScheduleForm(forms.ModelForm):
 
+    def __init__(self, project=None, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if project:
+            self.fields['participants'].queryset = project.members.all()
+
     class Meta:
         model = Schedule
         exclude = ('project', 'author', 'recurrence', 'recur_until')

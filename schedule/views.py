@@ -71,6 +71,11 @@ class CreateView(ProjectMixin, generic.CreateView):
     template_name = 'schedule/create.html'
     form_class = ScheduleForm
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['project'] = self.project
+        return kwargs
+
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.project = self.project
@@ -112,6 +117,11 @@ class UpdateView(ProjectMixin, generic.UpdateView):
     template_name = 'schedule/update.html'
     model = Schedule
     form_class = ScheduleForm
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['project'] = self.project
+        return kwargs
 
     def test_func(self):
         if not super().test_func():
