@@ -35,6 +35,11 @@ p {
 .sidemenu {
   max-width: 200px;
 }
+.sidemenu i {
+  width: 1rem;
+  text-align: center;
+  margin-right: 4px;
+}
 
 #toast {
   display: none;

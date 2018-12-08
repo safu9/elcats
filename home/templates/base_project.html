@@ -3,14 +3,30 @@
 {% block sidemenu %}
   <aside class="menu">
     <ul class="menu-list">
-      <li><a href="{% url 'home:project_detail' project.slug %}">ホーム</a></li>
-      <li><a href="{% url 'task:index' project.slug %}">タスク</a></li>
-      <li><a href="{% url 'schedule:index' project.slug %}">予定</a></li>
-      <li><a href="{% url 'wiki:index' project.slug %}">Wiki</a></li>
-      {% comment %}<li><a href="{% url 'chat:index' %}">チャット</a></li>{% endcomment %}
-      <li><a href="#" class="has-text-grey-light">ファイル</a></li>
-      <li><a href="#" class="has-text-grey-light">コード</a></li>
-      <li><a href="{% url 'home:project_setting' project.slug %}">設定</a></li>
+      <li><a href="{% url 'home:project_detail' project.slug %}">
+        <i class="fa fa-flag" aria-hidden="true"></i> ホーム
+      </a></li>
+      <li><a href="{% url 'task:index' project.slug %}">
+        <i class="fa fa-tasks" aria-hidden="true"></i> タスク
+      </a></li>
+      <li><a href="{% url 'schedule:index' project.slug %}">
+        <i class="fa fa-calendar" aria-hidden="true"></i> 予定
+      </a></li>
+      <li><a href="{% url 'wiki:index' project.slug %}">
+        <i class="fa fa-book" aria-hidden="true"></i> Wiki
+      </a></li>
+      {% comment %}<li><a href="{% url 'chat:index' %}">
+        <i class="fa fa-comment-o" aria-hidden="true"></i> チャット
+      </a></li>{% endcomment %}
+      <li><a href="#" class="has-text-grey-light">
+        <i class="fa fa-folder-open-o" aria-hidden="true"></i> ファイル
+      </a></li>
+      <li><a href="#" class="has-text-grey-light">
+        <i class="fa fa-code-fork" aria-hidden="true"></i> コード
+      </a></li>
+      <li><a href="{% url 'home:project_setting' project.slug %}">
+        <i class="fa fa-cog" aria-hidden="true"></i> 設定
+      </a></li>
     </ul>
   </aside>
 {% endblock %}

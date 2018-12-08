@@ -32,6 +32,7 @@ function drawWikiLink(editor) {
 }
 
 var simplemde = new SimpleMDE({
+  autoDownloadFontAwesome: false,
   toolbar: [
     'heading', 'bold', 'italic', 'strikethrough', '|',
     'quote', 'unordered-list', 'ordered-list', 'table', 'horizontal-rule', '|',
