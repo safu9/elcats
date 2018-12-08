@@ -11,3 +11,7 @@ class ProjectForm(forms.ModelForm):
         widgets = {
             'members': forms.CheckboxSelectMultiple,
         }
+        help_texts = {
+            'slug': 'URLなどに使われ、半角の英数字、アンダースコア、ハイフンのみ使用できます。',
+            'is_private': 'このプロジェクトの内容をメンバー以外に非公開にします。',
+        }

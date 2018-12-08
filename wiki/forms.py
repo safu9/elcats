@@ -11,3 +11,6 @@ class PageForm(forms.ModelForm):
     class Meta:
         model = Page
         fields = ('project', 'name', 'slug', 'content')
+        help_texts = {
+            'slug': 'URLなどに使われ、半角の英数字、アンダースコア、ハイフンのみ使用できます。',
+        }
