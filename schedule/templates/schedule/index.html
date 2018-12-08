@@ -20,7 +20,16 @@
 
   <h2 class="title">予定</h2>
 
-  <hr>
+  <div class="tabs">
+    <ul>
+      <li class="{% if type == 'participated' %}is-active{% endif %}">
+        <a href="{% if type == 'participated' %}#{% else %}?type=participated{% endif %}">参加中</a>
+      </li>
+      <li class="{% if type == 'all' %}is-active{% endif %}">
+        <a href="{% if type == 'all' %}#{% else %}?type=all{% endif %}">すべて</a>
+      </li>
+    </ul>
+  </div>
 
   {% for schedule in object_list %}
     {% ifchanged %}
@@ -30,8 +39,8 @@
     <a href="{% url 'schedule:detail' project.slug schedule.pk %}" class="schedule-item">
       <div class="schedule-time">
         {% if schedule.time_from %}
-          {{ schedule.time_from|time:"H:i" }}
-          {% if schedule.time_to %} ～ {{ schedule.time_to|time:"H:i" }}{% endif %}
+          {{ schedule.time_from|time:"H:i" }} ～
+          {% if schedule.time_to %}{{ schedule.time_to|time:"H:i" }}{% endif %}
         {% endif %}
       </div>
       <div class="schedule-name">{{ schedule.name }}</div>

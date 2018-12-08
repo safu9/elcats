@@ -17,6 +17,18 @@ class IndexView(ProjectMixin, generic.ListView):
     ordering = ('date', 'time_from')
     paginate_by = 20
 
+    def get_queryset(self):
+        query = super().get_queryset()
+        self.type = self.request.GET.get('type', 'participated')
+        if self.type == 'participated':
+            return query.filter(participants=self.request.user)
+        return query
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['type'] = self.type
+        return context
+
 
 class BaseCalendarView(ProjectMixin, generic.ListView):
     model = Schedule
