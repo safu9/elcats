@@ -105,6 +105,7 @@ class GanttView(ProjectMixin, generic.ListView):
         max_date = q['date_to__max'] + datetime.timedelta(days=7)
         dates = self.daterange(min_date, max_date)
 
+        context['today'] = datetime.date.today()
         context['dates'] = dates
         context['months'] = self.group_dates_by_month(dates, min_date)
         context['charts'] = zip(context['object_list'], self.get_charts(context['object_list'], min_date))

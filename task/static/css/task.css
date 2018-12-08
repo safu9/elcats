@@ -171,6 +171,9 @@
 .task-gantt-day6 {
   background: #f5f5f5;
 }
+.task-gantt-today {
+  background: #e5fcf9;
+}
 
 .task-gantt-subbar {
   position: absolute;

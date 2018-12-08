@@ -56,7 +56,7 @@
         </div>
         <div class="task-gantt-row">
           {% for date in dates %}
-            <div class="task-gantt-cell task-gantt-date task-gantt-day{{ date.weekday }}">
+            <div class="task-gantt-cell task-gantt-date task-gantt-day{{ date.weekday }} {% if date == today %}task-gantt-today{% endif %}">
               {{ date|date:"j" }}
             </div>
           {% endfor %}
@@ -64,7 +64,7 @@
         {% for task, chart in charts %}
           <div class="task-gantt-row">
             {% for date in dates %}
-              <div class="task-gantt-cell task-gantt-day{{ date.weekday }}">
+              <div class="task-gantt-cell task-gantt-day{{ date.weekday }} {% if date == today %}task-gantt-today{% endif %}">
               </div>
             {% endfor %}
 
