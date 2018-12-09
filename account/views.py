@@ -4,7 +4,7 @@ from django.contrib.auth import views as auth_views
 from django.urls import reverse, reverse_lazy
 from django.views import generic
 
-from .forms import ProfileForm
+from .forms import UserProfileForm
 
 
 class LoginView(auth_views.LoginView):
@@ -62,10 +62,10 @@ class UserDetailView(LoginRequiredMixin, generic.DetailView):
     slug_field = 'username'
 
 
-class ProfileView(LoginRequiredMixin, generic.UpdateView):
-    template_name = 'account/profile.html'
+class UserProfileView(LoginRequiredMixin, generic.UpdateView):
+    template_name = 'account/user_profile.html'
     model = get_user_model()
-    form_class = ProfileForm
+    form_class = UserProfileForm
     context_object_name = 'object'
 
     def get_object(self, queryset=None):
