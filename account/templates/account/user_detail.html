@@ -8,7 +8,7 @@
   <nav class="breadcrumb is-small" aria-label="breadcrumbs">
     <ul>
       <li><a href="{% url 'home:index' %}">トップ</a></li>
-      <li class="is-active"><a href="#">ユーザー詳細</a></li>
+      <li class="is-active"><a href="#">{{ object.username }}</a></li>
     </ul>
   </nav>
 

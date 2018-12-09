@@ -8,6 +8,7 @@
   <nav class="breadcrumb is-small" aria-label="breadcrumbs">
     <ul>
       <li><a href="{% url 'home:index' %}">トップ</a></li>
+      <li><a href="{% url 'account:user_detail' user.username %}">{{ user.username }}</a></li>
       <li class="is-active"><a href="#">プロフィ－ル</a></li>
     </ul>
   </nav>
