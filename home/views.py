@@ -43,8 +43,8 @@ class ProjectDetailView(ProjectAccessMixin, generic.DetailView):
     context_object_name = 'project'
 
 
-class ProjectSettingView(ProjectAccessMixin, generic.UpdateView):
-    template_name = 'home/project_setting.html'
+class ProjectSettingsView(ProjectAccessMixin, generic.UpdateView):
+    template_name = 'home/project_settings.html'
     model = Project
     context_object_name = 'project'
     form_class = ProjectForm
