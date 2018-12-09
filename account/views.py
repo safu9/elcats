@@ -1,8 +1,10 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import views as auth_views
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.views import generic
+
+from .forms import ProfileForm
 
 
 class LoginView(auth_views.LoginView):
@@ -58,3 +60,16 @@ class UserDetailView(LoginRequiredMixin, generic.DetailView):
     model = get_user_model()
     context_object_name = 'object'
     slug_field = 'username'
+
+
+class ProfileView(LoginRequiredMixin, generic.UpdateView):
+    template_name = 'account/profile.html'
+    model = get_user_model()
+    form_class = ProfileForm
+    context_object_name = 'object'
+
+    def get_object(self, queryset=None):
+        return self.get_queryset().get(pk=self.request.user.pk)
+
+    def get_success_url(self):
+        return reverse('account:user_detail', args=(self.object.username,))
