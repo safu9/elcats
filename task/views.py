@@ -1,5 +1,7 @@
 import datetime
 
+from django.contrib.auth import get_user_model
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Max, Min
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
@@ -211,3 +213,27 @@ class DeleteView(ProjectMixin, generic.DeleteView):
 
     def get_success_url(self):
         return reverse('task:index', args=(self.project.slug,))
+
+
+class UserTaskView(LoginRequiredMixin, generic.ListView):
+    template_name = 'task/user_task.html'
+    model = Task
+    ordering = ('-pk')
+    paginate_by = 20
+
+    def get_queryset(self):
+        self.user_object = get_object_or_404(get_user_model(), username=self.kwargs.get('username'))
+
+        query = super().get_queryset().filter(assignees=self.user_object)
+        self.state = self.request.GET.get('state', 'undone')
+        if self.state == 'undone':
+            return query.exclude(state=2)
+        elif self.state == 'done':
+            return query.filter(state=2)
+        return query
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user_object'] = self.user_object
+        context['state'] = self.state
+        return context

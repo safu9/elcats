@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% load humanize static %}
+{% load bulma %}
+
+{% block title %}予定{% endblock %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="{% static 'css/schedule.css' %}" />
+{% endblock %}
+
+{% block content %}
+  <nav class="breadcrumb is-small" aria-label="breadcrumbs">
+    <ul>
+      <li><a href="{% url 'home:index' %}">トップ</a></li>
+      <li><a href="{% url 'account:user_detail' user_object.username %}">{{ user_object.username }}</a></li>
+      <li class="is-active"><a href="#">予定</a></li>
+    </ul>
+  </nav>
+
+  <h2 class="title">{{ user_object.username }} の予定</h2>
+
+  <hr>
+
+  {% for schedule in object_list %}
+    {% ifchanged %}
+      <div class="schedule-date">{{ schedule.date|naturalday }}</div>
+    {% endifchanged %}
+
+    <a href="{% url 'schedule:detail' schedule.project.slug schedule.pk %}" class="schedule-item">
+      <div class="schedule-time">
+        {% if schedule.time_from %}
+          {{ schedule.time_from|time:"H:i" }} ～
+          {% if schedule.time_to %}{{ schedule.time_to|time:"H:i" }}{% endif %}
+        {% endif %}
+      </div>
+      <div class="schedule-name">{{ schedule.name }}</div>
+    </a>
+  {% empty %}
+    <p>
+      まだ予定がありません。
+    </p>
+  {% endfor %}
+
+  <hr>
+
+  {% if is_paginated %}
+    <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+      {% bulma_pagination page_obj %}
+    </nav>
+  {% endif %}
+{% endblock %}

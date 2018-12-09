@@ -30,6 +30,17 @@
       <div class="navbar-menu">
         <div class="navbar-end">
           {% if user.is_authenticated %}
+            <div class="navbar-item">
+              <div class="buttons">
+                <a class="button is-light" href="{% url 'task:user_task' user.username %}">
+                  <i class="fa fa-tasks" aria-hidden="true"></i>
+                </a>
+                <a class="button is-light" href="{% url 'schedule:user_schedule' user.username %}">
+                  <i class="fa fa-calendar" aria-hidden="true"></i>
+                </a>
+              </div>
+            </div>
+
             <div class="navbar-item has-dropdown is-hoverable">
               <a class="navbar-link is-arrowless is-hidden-touch">
                 {% avatar_img user 28 %}

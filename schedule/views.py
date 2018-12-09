@@ -1,6 +1,8 @@
 import datetime
 
-from django.shortcuts import redirect
+from django.contrib.auth import get_user_model
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views import generic
 from django.views.generic.edit import FormMixin
@@ -165,3 +167,20 @@ class DeleteView(ProjectMixin, generic.DeleteView):
 
     def get_success_url(self):
         return reverse('schedule:index', args=(self.project.slug,))
+
+
+class UserScheduleView(LoginRequiredMixin, generic.ListView):
+    template_name = 'schedule/user_schedule.html'
+    model = Schedule
+    ordering = ('date', 'time_from')
+    paginate_by = 20
+
+    def get_queryset(self):
+        self.user_object = get_object_or_404(get_user_model(), username=self.kwargs.get('username'))
+        query = super().get_queryset().filter(participants=self.user_object)
+        return query
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user_object'] = self.user_object
+        return context
