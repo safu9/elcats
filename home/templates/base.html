@@ -19,18 +19,18 @@
 <body>
   <header class="navbar is-light" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
-        <a class="navbar-item navbar-logo" href="/"><img src="{% static 'img/logo.png' %}" alt="Elcats"/></a>
-
         <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false">
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
         </a>
+
+        <a class="navbar-item navbar-logo" href="/"><img src="{% static 'img/logo.png' %}" alt="Elcats"/></a>
       </div>
       <div class="navbar-menu">
         <div class="navbar-end">
           {% if user.is_authenticated %}
-            <div class="navbar-item">
+            <div class="navbar-item is-hidden-mobile-xs">
               <div class="buttons">
                 <a class="button is-light" href="{% url 'task:user_task' user.username %}">
                   <i class="fa fa-tasks" aria-hidden="true"></i>
@@ -42,7 +42,7 @@
             </div>
 
             <div class="navbar-item has-dropdown is-hoverable">
-              <a class="navbar-link is-arrowless is-hidden-touch">
+              <a class="navbar-link is-arrowless">
                 {% avatar_img user 28 %}
               </a>
 
@@ -76,6 +76,8 @@
     </div>
   </footer>
 
+  <div id="sidemenu-back" class="is-hidden"></div>
+
   <div class="notification is-primary" id="toast">
     <button class="delete" id="toast-delete"></button>
     <div id="toast-content">
@@ -86,12 +88,23 @@
   <script>
   document.addEventListener('DOMContentLoaded', function () {
     var $navbarBurger = document.querySelector('.navbar-burger');
-    $navbarBurger.addEventListener('click', function () {
-      var $navbarMenu = document.querySelector('.navbar-menu');
-
-      $navbarBurger.classList.toggle('is-active');
-      $navbarMenu.classList.toggle('is-active');
-    });
+    var $sidebarMenu = document.querySelector('.sidemenu');
+    var $sidebarMenuBack = document.getElementById('sidemenu-back');
+    if($sidebarMenu){
+      $navbarBurger.addEventListener('click', function () {
+        $navbarBurger.classList.toggle('is-active');
+        $sidebarMenu.classList.toggle('is-active');
+        $sidebarMenuBack.classList.toggle('is-hidden');
+      });
+      $sidebarMenuBack.addEventListener('click', function () {
+        $navbarBurger.classList.toggle('is-active');
+        $sidebarMenu.classList.toggle('is-active');
+        $sidebarMenuBack.classList.toggle('is-hidden');
+      });
+    }else{
+      $navbarBurger.classList.add('is-hidden');
+      $sidebarMenuBack.classList.add('is-hidden');
+    }
 
     document.getElementById('toast-delete').addEventListener('click', function () {
       var $toast = document.getElementById('toast');

@@ -7,6 +7,12 @@ p {
   margin-bottom: 1em;
 }
 
+@media screen and (max-width: 375px) {
+  .is-hidden-mobile-xs {
+    display: none !important;
+  }
+}
+
 .input, .textarea {
   box-shadow: none;
 }
@@ -24,12 +30,54 @@ p {
 .navbar-logo img {
 	max-height: 2.25rem;
 }
-@media screen and (max-width: 1087px) {
-  .navbar-menu {
-    position: absolute;
-    left: 0;
-    right: 0;
-  }
+
+.navbar-burger {
+  margin: 0;
+}
+.navbar, .navbar-start, .navbar-end, .navbar-menu {
+  flex-grow: 1;
+  flex-shrink: 0;
+  align-items: stretch;
+  display: flex;
+}
+.navbar-menu {
+  background: none;
+  box-shadow: none;
+  padding: 0;
+}
+.navbar-end {
+  justify-content: flex-end;
+  margin-left: auto;
+}
+.navbar-item, .navbar-link {
+  align-items: center;
+  display: flex;
+}
+.navbar-dropdown {
+  background-color: #fff;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  border-top: 2px solid #dbdbdb;
+  box-shadow: 0 8px 8px rgba(10,10,10,.1);
+  display: none;
+  font-size: .875rem;
+  left: 0;
+  min-width: 100%;
+  position: absolute;
+  top: 100%;
+  z-index: 20;
+}
+.navbar-dropdown.is-right {
+  left: auto;
+  right: 0;
+}
+.navbar-item.is-active .navbar-dropdown,
+.navbar-item.is-hoverable:hover .navbar-dropdown {
+  display: block;
+}
+.navbar-dropdown .navbar-item {
+  padding: .375rem 1rem;
+  white-space: nowrap;
 }
 
 .sidemenu {
@@ -66,6 +114,40 @@ p {
   border-radius: 4px;
   box-shadow: 0 2px 3px rgba(10,10,10,.1), 0 0 0 1px rgba(10,10,10,.1);
   z-index: 100;
+}
+
+@media screen and (max-width: 768px){
+  .sidemenu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: block;
+    background: #fff;
+    z-index: 100;
+    height: 100vh;
+    transform: translateX(-100%);
+    transition: transform .2s ease;
+    box-shadow: 0 10px 10px rgba(10,10,10,.1);
+  }
+  .sidemenu.is-active {
+    transform: translateX(0);
+  }
+
+  .sidemenu li:hover ul:not(.is-active) {
+    display: none;
+  }
+
+  #sidemenu-back {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #333;
+    opacity: .1;
+    z-index: 50;
+  }
 }
 
 #toast {
