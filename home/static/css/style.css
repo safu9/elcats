@@ -172,3 +172,7 @@ p {
 .avatar {
   border-radius: 4px;
 }
+
+.tab-spacer {
+  flex-grow: 1;
+}

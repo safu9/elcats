@@ -9,7 +9,7 @@ from django.views import generic
 from django.views.generic.edit import FormMixin
 
 from home.mixins import ProjectMixin
-from .forms import TaskForm, TaskCommentForm
+from .forms import TaskForm, TaskCommentForm, TaskSearchForm
 from .models import Task
 
 
@@ -20,17 +20,12 @@ class IndexView(ProjectMixin, generic.ListView):
     paginate_by = 20
 
     def get_queryset(self):
-        query = super().get_queryset()
-        self.state = self.request.GET.get('state', 'undone')
-        if self.state == 'undone':
-            return query.exclude(state=2)
-        elif self.state == 'done':
-            return query.filter(state=2)
-        return query
+        self.form = TaskSearchForm(self.request.GET)
+        return self.form.filter_query(super().get_queryset())
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['state'] = self.state
+        context['form'] = self.form
         return context
 
 

@@ -1,6 +1,29 @@
 from django import forms
+from django.db.models import Q
 
 from .models import Task, TaskComment
+
+
+class TaskSearchForm(forms.Form):
+    keyword = forms.CharField(label='', max_length=500, required=False)
+    state = forms.CharField(label='', max_length=20, required=False, widget=forms.HiddenInput)
+
+    def filter_query(self, query):
+        if not self.is_valid():
+            return query
+
+        state = self.cleaned_data['state']
+        if state == 'done':
+            query = query.filter(state=2)
+        else:
+            query = query.exclude(state=2)
+
+        keyword = self.cleaned_data['keyword'].strip()
+        if keyword:
+            for w in keyword.split():
+                query = query.filter(Q(name__contains=w) | Q(description__contains=w))
+
+        return query
 
 
 class TaskForm(forms.ModelForm):

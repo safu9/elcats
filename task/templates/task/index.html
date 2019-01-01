@@ -1,7 +1,7 @@
 {% extends "base_project.html" %}
 
 {% load static %}
-{% load bulma %}
+{% load bulma utils %}
 
 {% block title %}タスク{% endblock %}
 
@@ -22,11 +22,24 @@
 
   <div class="tabs">
     <ul>
-      <li class="{% if state == 'undone' %}is-active{% endif %}">
-        <a href="{% if state == 'undone' %}#{% else %}?state=undone{% endif %}">未完了</a>
+      <li class="{% if form.state.value != 'done' %}is-active{% endif %}">
+        <a href="{% if form.state.value != 'done' %}#{% else %}{% urlparams request.GET state='undone' %}{% endif %}">未完了</a>
       </li>
-      <li class="{% if state == 'done' %}is-active{% endif %}">
-        <a href="{% if state == 'done' %}#{% else %}?state=done{% endif %}">完了</a>
+      <li class="{% if form.state.value == 'done' %}is-active{% endif %}">
+        <a href="{% if form.state.value == 'done' %}#{% else %}{% urlparams request.GET state='done' %}{% endif %}">完了</a>
+      </li>
+      <li class="tab-spacer"></li>
+      <li>
+        <form>
+          {% if form.state.value %}{{ form.state }}{% endif %}
+
+          <div class="control has-icons-left">
+            {{ form.keyword | bulma_form }}
+            <span class="icon is-small is-left is-marginless">
+              <i class="fa fa-search"></i>
+            </span>
+          </div>
+        </form>
       </li>
     </ul>
   </div>
