@@ -1,6 +1,27 @@
 from django import forms
+from django.db.models import Q
 
 from .models import Schedule, ScheduleComment
+
+
+class ScheduleSearchForm(forms.Form):
+    keyword = forms.CharField(label='', max_length=500, required=False)
+    type = forms.CharField(label='', max_length=20, required=False, widget=forms.HiddenInput)
+
+    def filter_query(self, query, user):
+        if not self.is_valid():
+            return query
+
+        type = self.cleaned_data['type']
+        if type != 'all':
+            query = query.filter(participants=user)
+
+        keyword = self.cleaned_data['keyword'].strip()
+        if keyword:
+            for w in keyword.split():
+                query = query.filter(Q(name__contains=w) | Q(description__contains=w))
+
+        return query
 
 
 class ScheduleForm(forms.ModelForm):

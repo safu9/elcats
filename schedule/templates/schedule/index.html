@@ -1,7 +1,7 @@
 {% extends "base_project.html" %}
 
 {% load humanize static %}
-{% load bulma %}
+{% load bulma utils %}
 
 {% block title %}予定{% endblock %}
 
@@ -22,11 +22,24 @@
 
   <div class="tabs">
     <ul>
-      <li class="{% if type == 'participated' %}is-active{% endif %}">
-        <a href="{% if type == 'participated' %}#{% else %}?type=participated{% endif %}">参加中</a>
+      <li class="{% if form.type.value != 'all' %}is-active{% endif %}">
+        <a href="{% if form.type.value != 'all' %}#{% else %}{% urlparams request.GET type='participated' %}{% endif %}">参加中</a>
       </li>
-      <li class="{% if type == 'all' %}is-active{% endif %}">
-        <a href="{% if type == 'all' %}#{% else %}?type=all{% endif %}">すべて</a>
+      <li class="{% if form.type.value == 'all' %}is-active{% endif %}">
+        <a href="{% if form.type.value == 'all' %}#{% else %}{% urlparams request.GET type='all' %}{% endif %}">すべて</a>
+      </li>
+      <li class="tab-spacer"></li>
+      <li>
+        <form>
+          {% if form.type.value %}{{ form.type }}{% endif %}
+
+          <div class="control has-icons-left">
+            {{ form.keyword | bulma_form }}
+            <span class="icon is-small is-left is-marginless">
+              <i class="fa fa-search"></i>
+            </span>
+          </div>
+        </form>
       </li>
     </ul>
   </div>

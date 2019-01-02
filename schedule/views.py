@@ -8,7 +8,7 @@ from django.views import generic
 from django.views.generic.edit import FormMixin
 
 from home.mixins import ProjectMixin
-from .forms import ScheduleForm, ScheduleCommentForm
+from .forms import ScheduleForm, ScheduleCommentForm, ScheduleSearchForm
 from .mixins import MonthCalendarMixin, WeekCalendarMixin
 from .models import Schedule
 
@@ -20,15 +20,12 @@ class IndexView(ProjectMixin, generic.ListView):
     paginate_by = 20
 
     def get_queryset(self):
-        query = super().get_queryset()
-        self.type = self.request.GET.get('type', 'participated')
-        if self.type == 'participated':
-            return query.filter(participants=self.request.user)
-        return query
+        self.form = ScheduleSearchForm(self.request.GET)
+        return self.form.filter_query(super().get_queryset(), self.request.user)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['type'] = self.type
+        context['form'] = self.form
         return context
 
 
