@@ -1,28 +1,41 @@
 from math import floor
-import re
 from urllib.parse import parse_qs, urlencode, urlparse, urlunparse
 
-from django import template
-from django.utils.html import conditional_escape
-from django.utils.safestring import mark_safe
+from django import forms, template
+from django.template.loader import get_template
 
 
 register = template.Library()
 
 
-@register.filter(needs_autoescape=True)
-def bulma_form(value, autoescape=True):
-    if autoescape:
-        value = conditional_escape(value)
+INPUT_WIDGETS = (
+    forms.TextInput,
+    forms.NumberInput,
+    forms.EmailInput,
+    forms.URLInput,
+    forms.PasswordInput,
+    forms.DateInput,
+    forms.TimeInput,
+    forms.DateTimeInput
+)
 
-    value = value.replace('input type="text" ', 'input type="text" class="input" ')
-    value = value.replace('input type="date" ', 'input type="date" class="input" ')
-    value = value.replace('input type="email" ', 'input type="email" class="input" ')
-    value = value.replace('input type="password" ', 'input type="password" class="input" ')
-    value = value.replace('textarea ', 'textarea class="textarea" ')
-    value = re.sub('<select(.*?)/select>', r'<div class="select"><select\1/select></div>', value, flags=re.DOTALL)
 
-    return mark_safe(value)
+@register.simple_tag
+def bulma_field(field, extra_class=''):
+    widget = field.field.widget
+    html_class = extra_class.split()
+
+    if isinstance(widget, INPUT_WIDGETS):
+        html_class.insert(0, "input")
+    elif isinstance(widget, forms.Textarea):
+        html_class.insert(0, "textarea")
+    elif isinstance(widget, forms.Select):
+        html_class.insert(0, "select")
+        template = get_template("bulma/select.html")
+        return template.render({'field': field, 'html_class': html_class})
+
+    widget.attrs["class"] = ' '.join(html_class)
+    return field
 
 
 @register.inclusion_tag("bulma/pagination.html")

@@ -34,7 +34,7 @@
           {% if form.state.value %}{{ form.state }}{% endif %}
 
           <div class="control has-icons-left">
-            {{ form.keyword | bulma_form }}
+            {% bulma_field form.keyword %}
             <span class="icon is-small is-left is-marginless">
               <i class="fa fa-search"></i>
             </span>

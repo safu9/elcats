@@ -103,7 +103,7 @@
     {% csrf_token %}
     <div class="field">
       <div class="control">
-        {{ form | bulma_form }}
+        {% bulma_field form.content %}
       </div>
     </div>
     <div class="field">
