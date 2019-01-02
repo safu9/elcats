@@ -39,10 +39,10 @@ def bulma_field(field, extra_class=''):
 
 
 @register.inclusion_tag("bulma/pagination.html")
-def bulma_pagination(page, pages_to_show=5, url=None, extra=None, parameter_name="page"):
+def bulma_pagination(page_obj, pages_to_show=5, url=None, extra=None, parameter_name="page"):
     """ Render pagination for a page
     Parameters:
-        page : The page of results to show
+        page_obj : The page object to show
         pages_to_show : Number of pages in total
         url : URL to navigate to for pagination forward and pagination back
         extra : Any extra page parameters
@@ -53,17 +53,17 @@ def bulma_pagination(page, pages_to_show=5, url=None, extra=None, parameter_name
     if pages_to_show < 1:
         pages_to_show = 1
 
-    num_pages = page.paginator.num_pages
-    current_page = page.number
-    half_page_num = int(floor(pages_to_show / 2))
-    if half_page_num < 0:
-        half_page_num = 0
+    num_pages = page_obj.paginator.num_pages
+    current_page = page_obj.number
+    half_page = int(floor(pages_to_show / 2))
+    if half_page < 0:
+        half_page = 0
 
-    first_page = current_page - half_page_num
+    first_page = current_page - half_page
     if first_page <= 1:
         first_page = 1
     if first_page > 1:
-        pages_back = first_page - half_page_num
+        pages_back = first_page - half_page
         if pages_back < 1:
             pages_back = 1
     else:
@@ -75,7 +75,7 @@ def bulma_pagination(page, pages_to_show=5, url=None, extra=None, parameter_name
     if last_page > num_pages:
         last_page = num_pages
     if last_page < num_pages:
-        pages_forward = last_page + half_page_num
+        pages_forward = last_page + half_page
         if pages_forward > num_pages:
             pages_forward = num_pages
     else:
@@ -87,22 +87,17 @@ def bulma_pagination(page, pages_to_show=5, url=None, extra=None, parameter_name
         else:
             pages_back = None
 
-    pages_shown = []
-    for i in range(first_page, last_page + 1):
-        pages_shown.append(i)
+    pages_shown = list(range(first_page, last_page + 1))
 
-    # parse the url
     parts = urlparse(url or "")
     params = parse_qs(parts.query)
 
-    # append extra query parameters to the url.
     if extra:
         params.update(extra)
 
     if params.get(parameter_name):
         del params[parameter_name]
 
-    # build url again.
     url = urlunparse(
         [
             parts.scheme,

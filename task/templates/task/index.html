@@ -23,10 +23,10 @@
   <div class="tabs">
     <ul>
       <li class="{% if form.state.value != 'done' %}is-active{% endif %}">
-        <a href="{% if form.state.value != 'done' %}#{% else %}{% urlparams request.GET state='undone' %}{% endif %}">未完了</a>
+        <a href="{% if form.state.value != 'done' %}#{% else %}{% urlparams request.GET state='undone' page=None %}{% endif %}">未完了</a>
       </li>
       <li class="{% if form.state.value == 'done' %}is-active{% endif %}">
-        <a href="{% if form.state.value == 'done' %}#{% else %}{% urlparams request.GET state='done' %}{% endif %}">完了</a>
+        <a href="{% if form.state.value == 'done' %}#{% else %}{% urlparams request.GET state='done' page=None %}{% endif %}">完了</a>
       </li>
       <li class="tab-spacer"></li>
       <li>

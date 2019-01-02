@@ -23,10 +23,10 @@
   <div class="tabs">
     <ul>
       <li class="{% if form.type.value != 'all' %}is-active{% endif %}">
-        <a href="{% if form.type.value != 'all' %}#{% else %}{% urlparams request.GET type='participated' %}{% endif %}">参加中</a>
+        <a href="{% if form.type.value != 'all' %}#{% else %}{% urlparams request.GET type='participated' page=None %}{% endif %}">参加中</a>
       </li>
       <li class="{% if form.type.value == 'all' %}is-active{% endif %}">
-        <a href="{% if form.type.value == 'all' %}#{% else %}{% urlparams request.GET type='all' %}{% endif %}">すべて</a>
+        <a href="{% if form.type.value == 'all' %}#{% else %}{% urlparams request.GET type='all' page=None %}{% endif %}">すべて</a>
       </li>
       <li class="tab-spacer"></li>
       <li>
@@ -74,7 +74,7 @@
 
   {% if is_paginated %}
     <nav class="pagination is-centered" role="navigation" aria-label="pagination">
-      {% bulma_pagination page_obj %}
+      {% bulma_pagination page_obj extra=request.GET %}
     </nav>
   {% endif %}
 {% endblock %}
