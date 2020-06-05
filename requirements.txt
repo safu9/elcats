@@ -1,4 +1,4 @@
-Django==2.1
+Django==2.2.13
 Pillow==5.4.0
 django-recurrence==1.8.1
 markdown==2.6.11
